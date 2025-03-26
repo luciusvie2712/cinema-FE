@@ -1,0 +1,33 @@
+.slider-main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    height: auto;
+    width: 100%;
+    padding-top: 25px;
+background-color: black;
+    .img-slider{
+        padding-left: 60px;
+        img{
+          
+            outline: none;
+            width: 60%;
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            cursor: pointer;
+        }
+    }
+    
+}
+.header-slider{
+    font-size: 40px;
+    color: aqua;
+    
+
+}
+.slick-slider {
+    margin: 50px;
+    padding: 0px;
+  }

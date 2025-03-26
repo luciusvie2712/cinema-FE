@@ -1,0 +1,88 @@
+// footer.scss
+
+Footer {
+    background-color: #222;
+    color: white;
+    padding: 40px;
+    text-align: left;
+    font-size: 15px;
+  
+    .footer-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+  
+      .footer-column {
+        flex: 1;
+        min-width: 200px;
+  
+        .footer-logo {
+          max-width: 150px;
+          margin-bottom: 10px;
+        }
+  
+        .footer-heading {
+          margin-top: 0;
+          text-align: center;
+        }
+  
+        .footer-list {
+          list-style: none;
+          padding: 0;
+        }
+  
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            margin-right: 10px;
+            width: 90px;
+            
+          .footer-icon {
+            
+            width: 50px;
+          }
+        }
+  
+        &:nth-child(2) {
+          .footer-payment-icons {
+            margin-top: 10px;
+  
+            .payment-icon {
+              width: 30px;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
+  
+    .footer-copyright {
+      text-align: center;
+      margin-top: 20px;
+    }
+  
+    .footer-back-to-top {
+      position: relative;
+      text-align: right;
+      margin-top: 20px;
+  
+      .back-to-top-link {
+        background-color: #ddd;
+        color: black;
+        padding: 10px;
+        border-radius: 5px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+  
+        .back-to-top-icon {
+          fill: currentColor;
+        }
+      }
+    }
+    .fa-brands, .fab {
+        width: 30px;
+       
+    }
+   
+  }

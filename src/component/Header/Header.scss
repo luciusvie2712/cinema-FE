@@ -1,0 +1,83 @@
+
+header {
+    background-color: black;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; /* Thêm position fixed */
+    top: 0; /* Thêm top 0 */
+    width: 100%; /* Thêm width 100% */
+    z-index: 100; /* Thêm z-index */
+    box-sizing: border-box; /* Thêm box-sizing */
+  }
+  
+  header div:first-child {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: rgb(220, 38, 38);
+    
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    margin-left: 4.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  
+  nav li:hover {
+    color: rgb(193, 14, 14);
+  }
+  
+  header div:last-child {
+    display: flex;
+    align-items: center;
+  }
+  
+  header input[type="text"] {
+    padding: 0.5rem 0.75rem;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border: 1px solid rgb(209, 213, 219);
+    color: black;
+    outline: none;
+    width: 200px;
+    font-size: 10px;
+    padding-left: 10px;
+  }
+  
+  header button {
+    background-color: rgb(220, 38, 38);
+    padding: 0.35rem 1.5rem;
+    color: white;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    width:px ;
+    height: auto;
+    font-size: 25px;
+    border-radius: 50px;
+    
+
+  }
+  
+  header button:hover {
+    background-color: rgb(190, 18, 18);
+  }
+  input::placeholder{
+    width: 100px;
+    
+  }
+  header div:first-child{
+    font-size: 3.5rem;
+    
+    
+
+  }
