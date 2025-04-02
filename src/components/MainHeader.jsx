@@ -6,14 +6,17 @@ const MainHeader = () => {
         <div className="container-header">
             <div className="header__navigation">
                 <div className="navigation__logo">
-                    <img src={Logo} className="header-logo" />
+                    <a href="http://localhost:5173/">
+                        <img src={Logo} className="header-logo" />
+                    </a>
                 </div>
                 <div className="navigation__navbar">
                     <ul className="navbar">
-                        <li className="navbar-option">PHIM ĐANG CHIẾU</li>
-                        <li className="navbar-option">PHIM SẮP CHIẾU</li>
-                        <li className="navbar-option">TIN TỨC & ƯU ĐÃI</li>
+                        <li className="navbar-option"><a href="http://localhost:5173/ShowsTime">LỊCH CHIẾU</a></li>
+                        <li className="navbar-option"><a href="http://localhost:5173/">PHIM CHIẾU</a></li>
+                        <li className="navbar-option">TIN TỨC & KHUYẾN MÃI</li>
                         <li className="navbar-option">VÉ CỦA TÔI</li>
+                        <li className="navbar-option">BLOG PHIM</li>
                     </ul>
                 </div>
             </div>
@@ -21,7 +24,7 @@ const MainHeader = () => {
                 <div className="account-option__item">
                     <div className="account-option__item__icon"></div>
                     <p className="account-option__text login">
-                        ĐÂNG NHẬP /
+                        ĐĂNG NHẬP /
                     </p>
                 </div>
                 <div className="account-option__item">

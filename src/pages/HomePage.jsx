@@ -1,16 +1,20 @@
 import Layout from "../layouts/MainLayout"
 import Banner from "../components/BannerHome"
-import SlideMovieRating from "../components/SlideMovieRating"
+import SlideMovieShowing from "../components/SlideMovieShowing"
 import SlideMovieComing from "../components/SlideMovieComing"
-import ListMovieShowing from "../components/ListMovieShowing"
+import SearchMovie from "../components/SearchMovie"
+import ShowsTime from "../components/ShowsTime"
+import NewsAndPromotion from "../components/NewsAndPromotion"
 
 const HomePage = () => {
     return (
         <Layout>
             <Banner />
-            <SlideMovieRating />
-            <ListMovieShowing />
+            <SlideMovieShowing />    
             <SlideMovieComing />
+            <ShowsTime />
+            <SearchMovie />
+            <NewsAndPromotion />
         </Layout>
     )
 }
