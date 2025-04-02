@@ -3,7 +3,7 @@ import Header from "../components/MainHeader.jsx";
 import Footer from "../components/MainFooter.jsx";
 import "../assets/style/MainLayout.scss"
 
-const layoutHomePage = ({ children }) => {
+const MainLayout = ({ children }) => {
     return (
         <div className="main-layout">
             <Header />
@@ -13,4 +13,4 @@ const layoutHomePage = ({ children }) => {
     )
 }
 
-export default layoutHomePage;
+export default MainLayout;
