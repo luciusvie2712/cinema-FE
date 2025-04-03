@@ -1,7 +1,12 @@
 import React from "react"
 import '../assets/style/MainHeader.scss'
 import Logo from '../assets/image/logo-cinema.jpeg'
+import { useAuth } from '../context/AuthContext'
+import { Link } from 'react-router-dom'
+
 const MainHeader = () => {
+    const { user, logOut } = useAuth()
+
     return (
         <div className="container-header">
             <div className="header__navigation">
@@ -20,20 +25,30 @@ const MainHeader = () => {
                     </ul>
                 </div>
             </div>
-            <div className="header__account">
-                <div className="account-option__item">
-                    <div className="account-option__item__icon"></div>
-                    <p className="account-option__text login">
-                        ĐĂNG NHẬP /
-                    </p>
+
+            {user ? (
+                <div className="display-account">
+                    <img src={user.avatar} alt="avatar" className="account-avt"/>
+                    <span>{user.username} ({user.role})</span>
+                    {user.role === "admin" && <Link to="/admin" style={{ marginLeft: "10px" }}>Quản lý</Link>}
+                    <button onClick={logOut} className="account__btn-logout">Đăng xuất</button>
                 </div>
-                <div className="account-option__item">
-                    <div className="account-option__item__icon"></div>
-                    <p className="account-option__text register">
-                        ĐĂNG KÝ
-                    </p>
+            ) : (
+                <div className="header__account">
+                    <div className="account-option__item">
+                        <div className="account-option__item__icon"></div>
+                        <a href="http://localhost:5173/Login" className="account-option__text login">
+                            ĐĂNG NHẬP 
+                        </a>
+                    </div>
+                    <div className="account-option__item">
+                        <div className="account-option__item__icon"></div>
+                        <a href=""className="account-option__text register">
+                            ĐĂNG KÝ
+                        </a>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

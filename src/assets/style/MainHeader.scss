@@ -18,6 +18,14 @@
         align-items: center;
         .account-option__item {
             margin: 3px;
+            .account-option__text{
+                text-decoration: none;
+                color: #fff;
+            }
+            :hover{
+                color: #746868;
+                text-shadow: 1px 1px #ffffff;
+            }
         }
     }
     .header__navigation{
