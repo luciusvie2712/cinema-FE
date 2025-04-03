@@ -6,9 +6,9 @@ import "../assets/style/MainLayout.scss"
 const MainLayout = ({ children }) => {
     return (
         <div className="main-layout">
-            <Header />
+            <Header className="header" />
             <div className="main-content">{children}</div>
-            <Footer />
+            <Footer className="footer" />
         </div>
     )
 }
