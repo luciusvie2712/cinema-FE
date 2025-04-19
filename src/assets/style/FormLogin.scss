@@ -1,0 +1,59 @@
+.login-container{
+    max-width: 100%;
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .login-content{
+        width: 450px;
+        background-color: #fff;
+        height: 50%;
+        color: #000;
+        .login-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 25px;
+            padding: 10px;
+        }
+        .login-form {
+            max-width: 100%;
+            padding: 5px 10px;
+            .login-form__content{
+                .email {
+                    width: 100%;
+                    display: flex;
+                    margin-bottom: 5px;
+                    .email__label {
+                        width: 20%;
+                    }
+                    input[type="email"] {
+                        width: 80%;
+                        background-color: #fff;
+                        border-style: none;
+                        line-height: 20px;
+                    }
+                }
+                .password {
+                    width: 100%;
+                    display: flex;
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+                    .password__label {
+                        width: 20%;
+                    }
+                    input[type="password"] {
+                        width: 80%;
+                        background-color: #fff;
+                        border-style: none;
+                        line-height: 20px;
+                    }
+                }
+                .btn-login {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}

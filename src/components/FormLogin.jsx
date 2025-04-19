@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import '../assets/style/FormLogin.scss'
 
 
 const FromLogin = () => {
@@ -17,7 +18,7 @@ const FromLogin = () => {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post("http://localhost:3000/login", email, password)
+            const res = await axios.post("http://localhost:3000/api/auth/login", email, password)
             login(res.data.user)
             localStorage.setItem("token", res.data.token)
 
@@ -38,11 +39,19 @@ const FromLogin = () => {
                 <div className="login-title">ĐĂNG NHẬP</div>
                 <div className="login-form">
                     <form onSubmit={handleLogin} className="login-form__content">
-                        <input type="email" placeholder="Email" value={email}  onChange={(e) => setEmail(e.target.value)} required />
-                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        <button type="submit" className="login-form__btn">Đăng Nhập</button>
+                        <div className="email">
+                            <label className="email__label">Email: </label>
+                            <input type="email" placeholder="Email" value={email}  onChange={(e) => setEmail(e.target.value)} required />
+                        </div>
+                        <div className="password">
+                            <label className="password__label">Mật khẩu: </label>
+                            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        </div>
+                        <div className="btn-login">
+                            <button type="submit" className="login-form__btn">Đăng Nhập</button>
+                        </div>
                     </form>
-                    {error && <p>{error}</p>}
+                    {error && <p className="err-message">{error}</p>}
                 </div>
             </div>
         </div>
