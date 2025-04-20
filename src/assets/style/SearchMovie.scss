@@ -1,0 +1,167 @@
+// Variables
+$primary-color: #e50914; // Màu đỏ Netflix-style
+$secondary-color: #ffffff;
+$background-dark: #141414;
+$card-bg: #222222;
+$text-muted: #a3a3a3;
+
+// Base styles
+.dark-movie-app {
+  background-color: $background-dark;
+  min-height: 100vh;
+  padding: 2rem;
+  color: $secondary-color;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+
+  .search-header {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    text-align: center;
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+
+      .momo-text {
+        color: $primary-color;
+        font-weight: 800;
+      }
+    }
+
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      transition: all 0.3s ease;
+
+      &.focused {
+        box-shadow: 0 0 0 2px $primary-color;
+      }
+
+      input {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 30px;
+        color: $secondary-color;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+
+        &:focus {
+          background: rgba(255, 255, 255, 0.15);
+          border-color: $primary-color;
+        }
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+
+      .clear-btn {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: $text-muted;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .movie-card {
+      background: $card-bg;
+      border-radius: 10px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+
+        .movie-hover-effect {
+          opacity: 1;
+        }
+      }
+
+      .movie-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+
+        h2 {
+          font-size: 1.5rem;
+          margin: 0;
+          color: $secondary-color;
+        }
+
+        .release-date {
+          color: $text-muted;
+          font-size: 0.9rem;
+        }
+      }
+
+      .original-title {
+        color: $text-muted;
+        font-style: italic;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+      }
+
+      .genres-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        .genre-tag {
+          background: rgba($primary-color, 0.2);
+          color: $primary-color;
+          padding: 0.3rem 0.8rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          border: 1px solid rgba($primary-color, 0.5);
+        }
+      }
+
+      .movie-hover-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba($primary-color, 0.1) 0%,
+          rgba($primary-color, 0) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+    }
+  }
+}

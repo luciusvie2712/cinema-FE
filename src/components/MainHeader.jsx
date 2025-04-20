@@ -1,56 +1,82 @@
-import React from "react"
-import '../assets/style/MainHeader.scss'
-import Logo from '../assets/image/logo-cinema.jpeg'
-import { useAuth } from '../context/AuthContext'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../assets/style/MainHeader.scss';
 
 const MainHeader = () => {
-    const { user, logOut } = useAuth()
+  const [activeTab, setActiveTab] = useState('PHIM ĐANG CHIẾU');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    return (
-        <div className="container-header">
-            <div className="header__navigation">
-                <div className="navigation__logo">
-                    <a href="http://localhost:5173/">
-                        <img src={Logo} className="header-logo" />
-                    </a>
-                </div>
-                <div className="navigation__navbar">
-                    <ul className="navbar">
-                        <li className="navbar-option"><a href="http://localhost:5173/ShowsTime">LỊCH CHIẾU</a></li>
-                        <li className="navbar-option"><a href="http://localhost:5173/">PHIM CHIẾU</a></li>
-                        <li className="navbar-option">TIN TỨC & KHUYẾN MÃI</li>
-                        <li className="navbar-option">VÉ CỦA TÔI</li>
-                        <li className="navbar-option">BLOG PHIM</li>
-                    </ul>
-                </div>
-            </div>
+  const navItems = [
+    'LỊCH CHIẾU',
+    'PHIM ĐANG CHIẾU',
+    'TIN TỨC & KHUYẾN MÃI',
+    'VÉ CỦA TÔI',
+    'BLOG PHIM'
+  ];
 
-            {user ? (
-                <div className="display-account">
-                    <img src={user.avatar} alt="avatar" className="account-avt"/>
-                    <span>{user.username} ({user.role})</span>
-                    {user.role === "admin" && <Link to="/admin" style={{ marginLeft: "10px" }}>Quản lý</Link>}
-                    <button onClick={logOut} className="account__btn-logout">Đăng xuất</button>
-                </div>
-            ) : (
-                <div className="header__account">
-                    <div className="account-option__item">
-                        <div className="account-option__item__icon"></div>
-                        <a href="http://localhost:5173/Login" className="account-option__text login">
-                            ĐĂNG NHẬP 
-                        </a>
-                    </div>
-                    <div className="account-option__item">
-                        <div className="account-option__item__icon"></div>
-                        <a href=""className="account-option__text register">
-                            ĐĂNG KÝ
-                        </a>
-                    </div>
-                </div>
-            )}
+  return (
+    <header className="cinene-header">
+      <div className="header-top">
+        <div className="container">
+          <div className="logo-container">
+            <Link to="/" className="logo">
+              <span className="logo-c">C</span>
+              <span className="logo-i">I</span>
+              <span className="logo-n">N</span>
+              <span className="logo-e">E</span>
+              <span className="logo-n2">N</span>
+              <span className="logo-e2">E</span>
+            </Link>
+          </div>
+          
+          <div className="auth-buttons">
+            <button className="auth-btn login-btn">
+              <span className="btn-icon">👤</span>
+              <span className="btn-text">ĐĂNG NHẬP</span>
+            </button>
+            <button className="auth-btn register-btn">
+              <span className="btn-icon">✍️</span>
+              <span className="btn-text">ĐĂNG KÝ</span>
+            </button>
+          </div>
+          
+          <button 
+            className="mobile-menu-toggle"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? '✕' : '☰'}
+          </button>
         </div>
-    )
-}
+      </div>
+      
+      <div className={`header-bottom ${isMenuOpen ? 'open' : ''}`}>
+        <div className="container">
+          <nav className="main-nav">
+            <ul>
+              {navItems.map((item, index) => (
+                <li 
+                  key={index}
+                  className={activeTab === item ? 'active' : ''}
+                  onClick={() => setActiveTab(item)}
+                >
+                  <Link to={`/${item.toLowerCase().replace(/ /g, '-')}`}>
+                    {item}
+                    <span className="nav-underline"></span>
+                    <span className="nav-hover-effect"></span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </div>
+      
+      <div className="header-decoration">
+        <div className="film-strip"></div>
+        <div className="spotlight"></div>
+      </div>
+    </header>
+  );
+};
 
 export default MainHeader;
