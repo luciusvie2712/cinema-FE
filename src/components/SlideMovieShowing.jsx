@@ -1,5 +1,6 @@
 import React from "react";
 import { useRef, useState, useEffect } from 'react';
+import axios from "axios";
 import anh1 from '../assets/image/AmDuongLo.webp';
 import anh2 from '../assets/image/CuoiMaGiaiHan.webp';
 import anh3 from '../assets/image/HuyetAnTruyHanh.webp';
@@ -12,100 +13,30 @@ import anh9 from '../assets/image/ThamTuKien.webp';
 import anh10 from '../assets/image/OanLinhNhapXac.webp';
 import '../assets/style/SlideMovie.scss';
 import '../assets/themify-icons/themify-icons.css';
-const cinemaList = [
-  {
-    id: 1,
-    name: "Oán Linh Nhập Xác ",
-    address: "Vincom Center, Quận 1, TP.HCM",
-    website: "http://localhost:5173/", 
-    image: anh10,
-    age: "18+",
-    rating :"5"
-  }, 
-  {
-    id: 2,
-    name: "Thám Tử Kiên ",
-    address: "Emart Gò Vấp, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh9,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 3,
-    name: "Nghề Siêu Khó Nói ",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh8,
-    age: "12+",
-    rating :"5"
-  },
-  {
-    id: 4,
-    name: "Mật Vụ Phụ Hồ",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh7,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 5,
-    name: "Nhiệm Vụ Bất Khả thi",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh6,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 6,
-    name: "Lưỡi Hái Tử Thần",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh4,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 7,
-    name: "Lưỡi Hái Tử Thần",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh3,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 8,
-    name: "Lưỡi Hái Tử Thần",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh2,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 9,
-    name: "Lưỡi Hái Tử Thần",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh1,
-    age: "18+",
-    rating :"5"
-  },
-  {
-    id: 10,
-    name: "Lưỡi Hái Tử Thần",
-    address: "116 Nguyễn Du, Quận 1, TP.HCM",
-    website: "http://localhost:5173/",
-    image: anh5,
-    age: "18+",
-    rating :"5"
-  }
-];
+
+
 const SlideMovieShowing = () => {
-const sliderRef = useRef(null);
+  const [movies, setMovies] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/movies/showing')
+        setMovies(response.data)
+        setLoading(false)
+      } catch (err) {
+        setError('Khong the tai danh sach phim')
+        setLoading(false)
+      }
+    }
+    fetchMovies()
+  }, [])
+  if (loading) return <div>Dang tai ....</div>
+  if (error) return <div>{error}</div>
+
+  const sliderRef = useRef(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
   
@@ -150,7 +81,7 @@ const sliderRef = useRef(null);
   
   return (
     <div className="movie-carousel-container">
-      <h1 className="title">Danh sách phim hot sắp chiếu </h1>
+      <h1 className="title">Phim hot đang chiếu </h1>
       
       <div className="carousel-wrapper">
         {showLeftButton && (
@@ -160,26 +91,18 @@ const sliderRef = useRef(null);
         )}
         
         <div className="movie-carousel" ref={sliderRef}>
-          {cinemaList.map((cinema) => (
-            <div className="movie-card" key={cinema.id}>
+          {movies.map((movie) => (
+            <div className="movie-card" key={movie.id}>
               <div className="poster-phim"> 
-                <img className="logo" src={cinema.image} alt={cinema.name} />
-                  <div className="age-tag">{cinema.age}</div>
+                <img className="logo" src={movie.posterUrl} alt={movie.title} />
+                  <div className="age-tag">18+</div>
                   <div className="play-icon">
                     <i className="ti-control-play icon"></i>
                   </div>
               </div>
-              <h2 className="name">{cinema.name}</h2>
-              <p className="address">{cinema.address}</p>
-              <p className="star-rating">★★★★★ {cinema.rating}  sao</p>
-              <a
-                className="link"
-                href={cinema.website}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Truy cập website thông tin phim
-              </a>
+              <h2 className="name">{cinema.title}</h2>
+              <p className="address">{cinema.genre}</p>
+              <p className="star-rating">★★★★★ {cinema.avgRating}  sao</p>
             </div>
           ))}
         </div>

@@ -32,11 +32,11 @@ const MainHeader = () => {
           <div className="auth-buttons">
             <button className="auth-btn login-btn">
               <span className="btn-icon">👤</span>
-              <span className="btn-text">ĐĂNG NHẬP</span>
+              <span className="btn-text"><Link to='/Login'>ĐĂNG NHẬP</Link></span>
             </button>
             <button className="auth-btn register-btn">
               <span className="btn-icon">✍️</span>
-              <span className="btn-text">ĐĂNG KÝ</span>
+              <span className="btn-text"><Link to='/Register'>ĐĂNG KÝ</Link></span>
             </button>
           </div>
           
