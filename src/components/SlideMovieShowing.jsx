@@ -10,6 +10,7 @@ import anh7 from '../assets/image/anh2.webp';
 import anh8 from '../assets/image/NgheSieuKhoNoi.png';
 import anh9 from '../assets/image/ThamTuKien.webp';
 import anh10 from '../assets/image/OanLinhNhapXac.webp';
+import '../assets/style/SlideMovie.scss';
 import '../assets/themify-icons/themify-icons.css';
 const cinemaList = [
   {

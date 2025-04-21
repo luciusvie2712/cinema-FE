@@ -1,7 +1,7 @@
 /* SlideMovieComing.scss */
 
 .movie-carousel-container {
-  padding: 40px 0;
+  padding: 40px 100px;
   max-width: 1550px;
   margin: 0 auto;
   position: relative;
@@ -58,6 +58,7 @@
     scroll-snap-align: start;
     background: #1e1e1e;
     border-radius: 10px;
+    cursor: pointer;
     overflow: hidden;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     
@@ -194,7 +195,6 @@
   &:hover {
     background-color: #f5c518;
     transform: translateY(-50%) scale(1.1);
-    
     i {
       color: #e50914;
     }

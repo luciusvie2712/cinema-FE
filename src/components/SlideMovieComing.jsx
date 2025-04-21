@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import '../assets/style/SlideMovieComing.scss';
+import '../assets/style/SlideMovie.scss';
 import anh1 from '../assets/image/AmDuongLo.webp';
 import anh2 from '../assets/image/CuoiMaGiaiHan.webp';
 import anh3 from '../assets/image/HuyetAnTruyHanh.webp';
