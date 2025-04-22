@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/style/MainHeader.scss';
+<<<<<<< HEAD
 
 const MainHeader = ({ onAuthClick }) => {
+=======
+const MainHeader = () => {
+>>>>>>> 89b932912224f6e3d591b161311eb070892ab40a
   const [activeTab, setActiveTab] = useState('PHIM ĐANG CHIẾU');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
