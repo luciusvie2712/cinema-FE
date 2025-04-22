@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/style/MainHeader.scss';
 
-const MainHeader = () => {
+const MainHeader = ({ onAuthClick }) => {
   const [activeTab, setActiveTab] = useState('PHIM ĐANG CHIẾU');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -30,13 +30,13 @@ const MainHeader = () => {
           </div>
           
           <div className="auth-buttons">
-            <button className="auth-btn login-btn">
+            <button className="auth-btn login-btn" onClick={() => onAuthClick('login')}>
               <span className="btn-icon">👤</span>
-              <span className="btn-text"><Link to='/Login'>ĐĂNG NHẬP</Link></span>
+              <span className="btn-text">ĐĂNG NHẬP</span>
             </button>
-            <button className="auth-btn register-btn">
+            <button className="auth-btn register-btn" onClick={() => onAuthClick('register')}>
               <span className="btn-icon">✍️</span>
-              <span className="btn-text"><Link to='/Register'>ĐĂNG KÝ</Link></span>
+              <span className="btn-text">ĐĂNG KÝ</span>
             </button>
           </div>
           

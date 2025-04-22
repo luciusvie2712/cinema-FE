@@ -4,7 +4,6 @@ import SlideMovieShowing from "../components/SlideMovieShowing"
 import SlideMovieComing from "../components/SlideMovieComing"
 import SearchMovie from "../components/SearchMovie"
 import ShowsTime from "../components/ShowsTime"
-import NewsAndPromotion from "../components/NewsAndPromotion"
 
 const HomePage = () => {
     return (
@@ -14,7 +13,6 @@ const HomePage = () => {
             <SlideMovieComing />
             <ShowsTime />
             <SearchMovie />
-            <NewsAndPromotion />
         </Layout>
     )
 }
