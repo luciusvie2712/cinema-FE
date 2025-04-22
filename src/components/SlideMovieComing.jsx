@@ -11,6 +11,7 @@ import anh8 from '../assets/image/NgheSieuKhoNoi.png';
 import anh9 from '../assets/image/ThamTuKien.webp';
 import anh10 from '../assets/image/OanLinhNhapXac.webp';
 import '../assets/themify-icons/themify-icons.css';
+import { useNavigate } from 'react-router-dom';
 const cinemaList = [
   {
     id: 1,
@@ -149,22 +150,24 @@ const SlideMovieComing = () => {
     }
   };
   
+  const navigate = useNavigate () 
+
+
+  
   return (
     <div className="movie-carousel-container">
       <h1 className="title">Danh sách phim hot trong tháng </h1>
-      
       <div className="carousel-wrapper">
         {showLeftButton && (
           <button className="nav-button left-button" onClick={scrollLeft}>
             <i className="ti-angle-left"></i>
           </button>
         )}
-        
         <div className="movie-carousel" ref={sliderRef}>
           {cinemaList.map((cinema) => (
             <div className="movie-card" key={cinema.id}>
               <div className="poster-phim"> 
-                <img className="logo" src={cinema.image} alt={cinema.name} />
+                <img className="logo" src={cinema.image} alt={cinema.name} onClick={()=>  navigate('/MovieComing')} />
                   <div className="age-tag">{cinema.age}</div>
                   <div className="play-icon">
                     <i className="ti-control-play icon"></i>

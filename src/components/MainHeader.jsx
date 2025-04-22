@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/style/MainHeader.scss';
-
 const MainHeader = () => {
   const [activeTab, setActiveTab] = useState('PHIM ĐANG CHIẾU');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
