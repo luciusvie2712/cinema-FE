@@ -6,6 +6,7 @@ import AdminMoviePage from '../pages/AdminMoviePage'
 import ShowtimePage from '../pages/ShowtimeManager'
 import AdminBookingList from "../pages/AdminBookingList";
 import AccountManager from "../pages/AccountManager";
+import MyTicketPage from "../pages/MyTicketPage";
 const AppRoutes = () => {
     return (
         <Router>
@@ -17,6 +18,7 @@ const AppRoutes = () => {
                 <Route path="/showtimes-manager" element={<ShowtimePage />} />
                 <Route path="/tickets-manager" element={<AdminBookingList />} />
                 <Route path="/users-manager" element={<AccountManager />} />
+                <Route path="/my-ticket" element={<MyTicketPage />} />
             </Routes>
         </Router>
     )

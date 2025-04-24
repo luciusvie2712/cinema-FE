@@ -7,26 +7,40 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 const DiscriptionMovie = ({ movie, user }) => {
-  console.log("user hiện tại nè:", user);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('');
-  const [selectedSeats, setSelectedSeats] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0)
-  const [paymentMethod, setPaymentMethod] = useState('pay-later');
+  const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const [seatData, setSeatData] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState('pay-online');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
-
+  const [showModal, setShowModal] = useState(false); // ✅ Thêm dòng này
 
   useEffect(() => {
     if (movie?._id) {
-      fetch(`/api/showtime/${movie._id}`)
-        .then(res => res.json())
-        .then(data => setShowtimes(data));
+      fetch(`http://localhost:5000/api/showtime/${movie._id}`)
+        .then(res => {
+          if (!res.ok) {
+            console.error('Không thể lấy dữ liệu suất chiếu');
+            throw new Error('Không thể lấy dữ liệu suất chiếu');
+          }
+          return res.json();
+        })
+        .then(data => setShowtimes(data))
+        .catch(error => console.error(error));
     }
   }, [movie]);
+  
   useEffect(() => {
-    setTotalPrice(selectedSeats.length * 50000)
-  }, [selectedSeats])
+    setTotalPrice(selectedSeats.length * 50000);
+  }, [selectedSeats]);
+
+  useEffect(() => {
+    if (selectedShowtime) {
+      setSeatData(selectedShowtime.seats || []);
+      setSelectedSeats([]);
+    }
+  }, [selectedShowtime]);
 
   const toggleSeat = (seat) => {
     setSelectedSeats((prev) =>
@@ -35,19 +49,18 @@ const DiscriptionMovie = ({ movie, user }) => {
   };
 
   const handleBooking = async () => {
-    if (!selectedTime || selectedSeats.length === 0) return alert('Chọn đầy đủ thông tin');
+    if (!selectedShowtime || selectedSeats.length === 0) {
+      return alert('Chọn đầy đủ thông tin');
+    }
   
-    const [date, time] = selectedTime.split('|');
-    const showtime = showtimes.find(st => st.date === date && st.time === time);
-  
-    const res = await fetch('/api/booking', {
+    const res = await fetch('http://localhost:5000/api/booking', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
-        showtimeId: showtime._id,
+        showtimeId: selectedShowtime._id,
         seats: selectedSeats,
         paymentMethod
       })
@@ -55,8 +68,15 @@ const DiscriptionMovie = ({ movie, user }) => {
   
     const data = await res.json();
     if (res.ok) {
+      setSeatData((prevSeats) =>
+        prevSeats.map((seat) =>
+          selectedSeats.includes(seat.seatNumber)
+            ? { ...seat, status: 'booked' }
+            : seat
+        )
+      );
+  
       if (paymentMethod === 'pay-online') {
-        // Giả lập QR bằng Google Chart
         const qr = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=Thanh+toan+${totalPrice}+VND+-+Ma+ve+${data.newBooking.ticketCode}`;
         setQrCodeUrl(qr);
       } else {
@@ -67,13 +87,17 @@ const DiscriptionMovie = ({ movie, user }) => {
       alert(data.message);
     }
   };
+
   const openModal = () => {
     if (!user || !user.email) {
-      console.log("User chưa đăng nhập");
       return alert('Bạn cần đăng nhập để đặt vé');
     }
-    console.log("Modal sẽ được mở");
     setShowModal(true);
+  };
+
+  const handleSelectShowtime = (value) => {
+    const st = showtimes.find(st => `${st.date}|${st.time}` === value);
+    setSelectedShowtime(st);
   };
 
   if (!movie) return <div>Đang tải phim...</div>;
@@ -89,22 +113,18 @@ const DiscriptionMovie = ({ movie, user }) => {
       <div className="info">
         <h1 className="title">{movie.title}</h1>
         <p className="subtitle">{movie.releaseDate?.slice(0, 10)} · {movie.duration} phút</p>
-
         <div className="rating">
           <FaStar className="star-icon" />
           <span>{movie.avgRating?.toFixed(1) || 'Chưa có đánh giá'}</span>
         </div>
-
         <div className="content">
           <span className="label">Nội dung:</span>
           <span>{movie.description}</span>
         </div>
-
         <div className="extra">
           <p><b>Ngày chiếu:</b> {new Date(movie.releaseDate).toLocaleDateString('vi-VN')}</p>
           <p><b>Thể loại:</b> {movie.genre.join(', ')}</p>
         </div>
-
         <button className="book-button" onClick={openModal}>ĐẶT VÉ NGAY</button>
       </div>
 
@@ -116,8 +136,8 @@ const DiscriptionMovie = ({ movie, user }) => {
       >
         <h2>Chọn suất chiếu và ghế ngồi</h2>
         <select
-          value={selectedTime}
-          onChange={(e) => setSelectedTime(e.target.value)}
+          value={selectedShowtime ? `${selectedShowtime.date}|${selectedShowtime.time}` : ''}
+          onChange={(e) => handleSelectShowtime(e.target.value)}
         >
           <option value="">-- Chọn suất chiếu --</option>
           {showtimes.map((st, index) => (
@@ -128,30 +148,32 @@ const DiscriptionMovie = ({ movie, user }) => {
         </select>
 
         <div className="seat-grid">
-          {Array.from({ length: 40 }, (_, i) => {
-            const seat = `A${i + 1}`;
-            const isSelected = selectedSeats.includes(seat);
+          {seatData.map(seat => {
+            const isSelected = selectedSeats.includes(seat.seatNumber);
+            const isBooked = seat.status === 'booked';
 
             return (
               <div
-                key={seat}
-                className={`seat ${isSelected ? 'selected' : ''}`}
-                onClick={() => toggleSeat(seat)}
+                key={seat.seatNumber}
+                className={`seat ${isSelected ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
+                onClick={() => !isBooked && toggleSeat(seat.seatNumber)}
               >
-                {seat}
+                {seat.seatNumber}
               </div>
             );
           })}
         </div>
+
         <div className="price-summary">
           <p>Tổng số ghế: {selectedSeats.length}</p>
-          <p>Giá mỗi vé: 50.00 VND</p>
+          <p>Giá mỗi vé: 50.000 VND</p>
           <h3>Tổng tiền: {totalPrice.toLocaleString('vi-VN')} VND</h3>
         </div>
+
         <button
           className="confirm-button"
           onClick={handleBooking}
-          disabled={!selectedTime || selectedSeats.length === 0}
+          disabled={!selectedShowtime || selectedSeats.length === 0}
         >
           XÁC NHẬN ĐẶT VÉ
         </button>
@@ -159,6 +181,5 @@ const DiscriptionMovie = ({ movie, user }) => {
     </div>
   );
 };
-
 
 export default DiscriptionMovie;

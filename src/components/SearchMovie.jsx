@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../assets/style/SearchMovie.scss';
 import axiosInstance from '../../axiosInstance'
+import { all } from 'axios';
 
 const SearchMovie = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,13 +23,19 @@ const SearchMovie = () => {
         }
       };
       fetchMovies();
+    } else {
+      const getAllMovie = async () => {
+        const allMovies = await axiosInstance.get('/api/movie/')
+        setFilteredMovies(allMovies.data)
+      }
+      getAllMovie()
     }
   }, [searchTerm, genres, status]);
 
   return (
     <div className="dark-movie-app">
       <div className="search-header">
-        <h1>Tìm phim chiếu rạp trên <span className="momo-text">CINENE</span></h1>
+        <h1>Tìm phim chiếu rạp trên <span className="momo-text">CINEME</span></h1>
         <div className={`search-container ${focused ? 'focused' : ''}`}>
           <input
             type="text"
@@ -67,19 +74,17 @@ const SearchMovie = () => {
       </div>
 
       <div className="movies-grid">
-        {filteredMovies.map((movie, index) => (
-          <div className="movie-card" key={index}>
-            <div className="movie-header">
-              <h2>{movie.title}</h2>
-              <span className="release-date">{movie.releaseDate}</span>
+        {filteredMovies.map(movie => (
+          <div className="movie-card" key={movie._id}>
+            <img src={movie.posterUrl} alt={movie.title} className="movie-poster" />
+            <div className="movie-content">
+              <h2 className="movie-title">{movie.title}</h2>
+              <p className="movie-description">{movie.description}</p>
+              <p><strong>Thể loại:</strong> {movie.genre.join(', ')}</p>
+              <p><strong>Khởi chiếu:</strong> {new Date(movie.releaseDate).toLocaleDateString()}</p>
+              <p><strong>Kết thúc:</strong> {new Date(movie.endDate).toLocaleDateString()}</p>
+              <p><strong>Trạng thái:</strong> {movie.status === 'showing' ? 'Đang chiếu' : movie.status === 'coming' ? 'Sắp chiếu' : 'Đã kết thúc'}</p>
             </div>
-            {movie.originalTitle && <p className="original-title">{movie.originalTitle}</p>}
-            <div className="genres-container">
-              {movie.genres.map((genre, i) => (
-                <span key={i} className="genre-tag">{genre}</span>
-              ))}
-            </div>
-            <div className="movie-hover-effect"></div>
           </div>
         ))}
       </div>

@@ -12,11 +12,10 @@ const SlideMovieShowing = () => {
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
 
-  // Fetch movie data
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await axiosInstance.get("/api/movie");
+        const response = await axiosInstance.get("/api/movie/showing");
         setMovies(response.data);
       } catch (err) {
         setError("Không thể tải danh sách phim");

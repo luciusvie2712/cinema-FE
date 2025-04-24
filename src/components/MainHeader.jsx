@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import '../assets/style/MainHeader.scss';
 
 const MainHeader = ({ onAuthClick, user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('RẠP PHIM');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation(); // Hook này sẽ lấy đường dẫn hiện tại
 
   const navItems = [
     { label: 'RẠP PHIM', path: '/' },
-    { label: 'VÉ CỦA TÔI', path: '/ve-cua-toi' },
+    { label: 'VÉ CỦA TÔI', path: '/my-ticket' },
     { label: 'BLOG PHIM', path: '/blog-phim' }
   ];
+
+  // Cập nhật activeTab khi location thay đổi
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const activeItem = navItems.find(item => item.path === currentPath);
+    if (activeItem) {
+      setActiveTab(activeItem.label);
+    }
+  }, [location, navItems]);
 
   return (
     <header className="cinene-header">

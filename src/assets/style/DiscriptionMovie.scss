@@ -256,6 +256,12 @@
   z-index: 1000;
   animation: overlayFadeIn 0.3s ease-out;
 }
+.seat.booked {
+  background-color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 
 /* Animations */
 @keyframes modalFadeIn {

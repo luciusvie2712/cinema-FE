@@ -1,75 +1,84 @@
 .dark-movie-app {
+  padding: 2rem;
   background-color: #121212;
-  color: white;
-  font-family: 'Roboto', sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 
   .search-header {
     text-align: center;
-    margin: 20px 0;
+    margin-bottom: 2rem;
 
     h1 {
-      font-size: 2.5rem;
-      color: #ff9900;
-      span.momo-text {
+      font-size: 2rem;
+      color: #ffffff;
+
+      .momo-text {
+        color: #f25287;
         font-weight: bold;
-        color: #ff6600;
       }
     }
 
     .search-container {
       position: relative;
-      width: 80%;
-      margin: 10px auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      border-radius: 25px;
-      background-color: #333;
+      margin: 1rem auto;
+      width: 60%;
+      transition: all 0.3s ease;
 
       input {
         width: 100%;
-        padding: 10px;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid #333;
+        background-color: #1e1e1e;
+        color: #fff;
         font-size: 1rem;
-        border: none;
-        border-radius: 20px;
         outline: none;
-        background-color: #222;
-        color: white;
-        transition: all 0.3s ease;
+
+        &::placeholder {
+          color: #888;
+        }
       }
 
-      input:focus {
-        background-color: #444;
+      &.focused input {
+        border-color: #f25287;
+        box-shadow: 0 0 6px #f2528780;
       }
 
       .clear-btn {
         position: absolute;
-        right: 15px;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
         background: none;
         border: none;
-        color: white;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+        color: #f25287;
         cursor: pointer;
+
+        &:hover {
+          color: #ff6f91;
+        }
       }
     }
 
     .filters {
+      margin-top: 1rem;
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 1rem;
 
       select {
-        padding: 10px;
-        background-color: #333;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        padding: 0.5rem 1rem;
+        background-color: #1e1e1e;
+        border: 1px solid #444;
+        color: #fff;
+        border-radius: 6px;
+        font-size: 0.95rem;
 
-        option {
-          background-color: #444;
+        &:focus {
+          border-color: #f25287;
+          outline: none;
         }
       }
     }
@@ -77,67 +86,50 @@
 
   .movies-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 
     .movie-card {
       background-color: #1a1a1a;
-      padding: 20px;
       border-radius: 10px;
-      position: relative;
       overflow: hidden;
-      transition: transform 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
 
       &:hover {
-        transform: scale(1.05);
-        .movie-hover-effect {
-          opacity: 0.7;
-        }
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(255, 101, 134, 0.4);
       }
 
-      .movie-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        
-        h2 {
+      .movie-poster {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+      }
+
+      .movie-content {
+        padding: 1rem;
+
+        .movie-title {
           font-size: 1.5rem;
+          color: #f25287;
+          margin-bottom: 0.5rem;
         }
 
-        .release-date {
-          font-size: 1rem;
-          color: #ff6600;
+        .movie-description {
+          font-size: 0.95rem;
+          color: #ccc;
+          margin-bottom: 1rem;
         }
-      }
 
-      .original-title {
-        font-size: 1rem;
-        color: #ccc;
-      }
+        p {
+          margin: 0.4rem 0;
+          color: #ddd;
 
-      .genres-container {
-        display: flex;
-        gap: 10px;
-
-        .genre-tag {
-          background-color: #444;
-          padding: 5px 10px;
-          border-radius: 20px;
-          font-size: 0.9rem;
-          color: white;
+          strong {
+            color: #f25287;
+          }
         }
-      }
-
-      .movie-hover-effect {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        transition: opacity 0.3s ease;
       }
     }
   }
