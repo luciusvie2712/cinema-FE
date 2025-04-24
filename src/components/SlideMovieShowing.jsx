@@ -1,120 +1,109 @@
-import React from "react";
-import { useRef, useState, useEffect } from 'react';
-import axios from "axios";
-import anh1 from '../assets/image/AmDuongLo.webp';
-import anh2 from '../assets/image/CuoiMaGiaiHan.webp';
-import anh3 from '../assets/image/HuyetAnTruyHanh.webp';
-import anh4 from '../assets/image/LatMat8.webp';
-import anh5 from '../assets/image/LuoiHaiTuThan.webp';
-import anh6 from '../assets/image/anh1.webp';
-import anh7 from '../assets/image/anh2.webp';
-import anh8 from '../assets/image/NgheSieuKhoNoi.png';
-import anh9 from '../assets/image/ThamTuKien.webp';
-import anh10 from '../assets/image/OanLinhNhapXac.webp';
-import '../assets/style/SlideMovie.scss';
-import '../assets/themify-icons/themify-icons.css';
-
+import React, { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axiosInstance from "../../axiosInstance";
+import "../assets/style/SlideMovie.scss";
+import "../assets/themify-icons/themify-icons.css";
 
 const SlideMovieShowing = () => {
-  const [movies, setMovies] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/movies/showing')
-        setMovies(response.data)
-        setLoading(false)
-      } catch (err) {
-        setError('Khong the tai danh sach phim')
-        setLoading(false)
-      }
-    }
-    fetchMovies()
-  }, [])
-  if (loading) return <div>Dang tai ....</div>
-  if (error) return <div>{error}</div>
-
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const sliderRef = useRef(null);
   const [showLeftButton, setShowLeftButton] = useState(false);
   const [showRightButton, setShowRightButton] = useState(true);
-  
-  const checkScroll = () => {
-    if (sliderRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-      setShowLeftButton(scrollLeft > 0);
-      setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
-    }
-  };
-  
+
+  // Fetch movie data
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await axiosInstance.get("/api/movie");
+        setMovies(response.data);
+      } catch (err) {
+        setError("Không thể tải danh sách phim");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMovies();
+  }, []);
+
   useEffect(() => {
     const slider = sliderRef.current;
+
+    const checkScroll = () => {
+      if (!slider) return;
+      const { scrollLeft, scrollWidth, clientWidth } = slider;
+      setShowLeftButton(scrollLeft > 0);
+      setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
+    };
+
     if (slider) {
-      slider.addEventListener('scroll', checkScroll);
-      checkScroll(); 
+      slider.addEventListener("scroll", checkScroll);
+      checkScroll();
     }
+
     return () => {
       if (slider) {
-        slider.removeEventListener('scroll', checkScroll);
+        slider.removeEventListener("scroll", checkScroll);
       }
     };
   }, []);
-  
-  const scrollLeft = () => {
+
+  const scrollSlider = (direction) => {
     if (sliderRef.current) {
       sliderRef.current.scrollBy({
-        left: -300,
-        behavior: 'smooth'
+        left: direction === "left" ? -300 : 300,
+        behavior: "smooth",
       });
     }
   };
-  
-  const scrollRight = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({
-        left: 300,
-        behavior: 'smooth'
-      });
-    }
-  };
-  
+
+  if (loading) return <div>Đang tải...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <div className="movie-carousel-container">
-      <h1 className="title">Phim hot đang chiếu </h1>
-      
+      <h1 className="title">Phim hot đang chiếu</h1>
       <div className="carousel-wrapper">
         {showLeftButton && (
-          <button className="nav-button left-button" onClick={scrollLeft}>
+          <button className="nav-button left-button" onClick={() => scrollSlider("left")}>
             <i className="ti-angle-left"></i>
           </button>
         )}
-        
+
         <div className="movie-carousel" ref={sliderRef}>
-          {movies.map((movie) => (
-            <div className="movie-card" key={movie.id}>
-              <div className="poster-phim"> 
-                <img className="logo" src={movie.posterUrl} alt={movie.title} />
+          {movies.length > 0 ? (
+            movies.map((movie) => (
+              <Link className="movie-card" key={movie._id} to={`/discription/${movie._id}`}>
+                <div className="poster-phim">
+                  <img
+                    className="logo"  
+                    src={movie.posterUrl || "default.jpg"}
+                    alt={movie.title || "No Title"}
+                  />
                   <div className="age-tag">18+</div>
                   <div className="play-icon">
                     <i className="ti-control-play icon"></i>
                   </div>
-              </div>
-              <h2 className="name">{cinema.title}</h2>
-              <p className="address">{cinema.genre}</p>
-              <p className="star-rating">★★★★★ {cinema.avgRating}  sao</p>
-            </div>
-          ))}
+                </div>
+                <h2 className="name">{movie.title || "Untitled"}</h2>
+                <p className="address">{movie.genre || "Unknown Genre"}</p>
+                <p className="star-rating">★★★★★ {movie.avgRating || "0"} sao</p>
+              </Link>
+            ))
+          ) : (
+            <div>Không có phim nào đang chiếu.</div>
+          )}
         </div>
-        
+
         {showRightButton && (
-          <button className="nav-button right-button" onClick={scrollRight}>
+          <button className="nav-button right-button" onClick={() => scrollSlider("right")}>
             <i className="ti-angle-right"></i>
           </button>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default SlideMovieShowing;

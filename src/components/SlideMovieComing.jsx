@@ -165,9 +165,9 @@ const SlideMovieComing = () => {
         )}
         <div className="movie-carousel" ref={sliderRef}>
           {cinemaList.map((cinema) => (
-            <div className="movie-card" key={cinema.id}>
-              <div className="poster-phim"> 
-                <img className="logo" src={cinema.image} alt={cinema.name} onClick={()=>  navigate('/MovieComing')} />
+            <div className="movie-card" key={cinema.id} onClick={()=>  navigate('/MovieComing', window.scroll(0,0))}>
+              <div className="poster-phim" > 
+                <img className="logo" src={cinema.image} alt={cinema.name}  />
                   <div className="age-tag">{cinema.age}</div>
                   <div className="play-icon">
                     <i className="ti-control-play icon"></i>

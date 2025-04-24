@@ -1,0 +1,102 @@
+.showtime-manager {
+    display: flex;
+    height: 100vh;
+    background-color: #0f0f0f;
+    color: #ff4d4d;
+  
+    // Sidebar tự xử lý, khỏi chỉnh
+  
+    &__content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+  
+      .inner-content {
+        width: 100%;
+        max-width: 900px;
+        background-color: #1a1a1a;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(255, 77, 77, 0.3);
+      }
+  
+      h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #ff4d4d;
+        text-shadow: 0 0 10px #ff1a1a;
+      }
+  
+      .form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+  
+        select, input {
+          padding: 0.75rem;
+          background-color: #1a1a1a;
+          border: 1px solid #ff4d4d;
+          border-radius: 8px;
+          color: #fff;
+  
+          &:focus {
+            outline: none;
+            border-color: #ff1a1a;
+            box-shadow: 0 0 10px #ff1a1a;
+          }
+        }
+  
+        button {
+          grid-column: span 2;
+          padding: 0.8rem;
+          background-color: #ff1a1a;
+          color: white;
+          font-weight: bold;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: #cc0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+          }
+        }
+      }
+  
+      .showtime-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #1a1a1a;
+        color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+  
+        th, td {
+          padding: 0.75rem 1rem;
+          border: 1px solid #2e2e2e;
+          text-align: left;
+        }
+  
+        th {
+          background-color: #262626;
+          color: #ff4d4d;
+          text-transform: uppercase;
+        }
+  
+        tr:nth-child(even) {
+          background-color: #121212;
+        }
+  
+        tr:hover {
+          background-color: #1f1f1f;
+        }
+      }
+    }
+  }
+  

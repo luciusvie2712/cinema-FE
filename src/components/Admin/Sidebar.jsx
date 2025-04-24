@@ -6,7 +6,7 @@ const Sidebar = () => {
     const [isExpanded, setIsExpanded] = useState(false)
 
     const menuItems = [
-      { path: '/', icon: '🏠', name: 'Dashboard' },
+      { path: '/Manager', icon: '🏠', name: 'Dashboard' },
       { path: '/movies-manager', icon: '🎬', name: 'Quản lý phim' },
       { path: '/users-manager', icon: '👥', name: 'Quản lý user' },
       { path: '/tickets-manager', icon: '🎫', name: 'Quản lý vé & chỗ ngồi' },

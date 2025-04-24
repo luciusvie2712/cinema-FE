@@ -77,7 +77,29 @@ $hover-color: #ff6b6b;
 .auth-buttons {
   display: flex;
   gap: 1rem;
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   
+    .user-name {
+      font-weight: 500;
+      color: #333;
+    }
+  
+    .logout-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #c0392b;
+      }
+    }
+  }
   .auth-btn {
     display: flex;
     align-items: center;
@@ -232,6 +254,7 @@ $hover-color: #ff6b6b;
     z-index: -1;
   }
 }
+
 
 // Mobile responsive styles
 .mobile-menu-toggle {

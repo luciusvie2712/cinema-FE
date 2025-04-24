@@ -36,9 +36,9 @@ $text-muted: #a3a3a3;
       position: relative;
       transition: all 0.3s ease;
 
-      &.focused {
-        box-shadow: 0 0 0 2px $primary-color;
-      }
+      // &.focused {
+      //   box-shadow: 0 0 0 2px $primary-color;
+      // }
 
       input {
         width: 100%;

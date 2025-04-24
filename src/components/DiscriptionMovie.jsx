@@ -1,136 +1,147 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../assets/style/DiscriptionMovie.scss';
-import anh1 from '../assets/image/AmDuongLo.webp';
-const DiscriptionMovie = () => {
-  const movie = {
-    title: "Âm Dương Lô",
-    posterUrl: anh1,
-    ageRating: "18+",
-    meta: [
-      { label: "Hải, Kinh Di", checked: false },
-      { label: "119'", checked: false },
-      { label: "Việt Nam", checked: true },
-      { label: "VN", checked: false }
-    ],
-    director: "Bùi Văn Hải",
-    cast: "Tiến Luật, Ngô Kiến Huy, NSND Hồng Văn, NSUT Hữu Châu, NSUT Đại Nghĩa, Thanh Hương, Hoàng Mèo, Nghệ sĩ Phi Phụng, Phan Vũ",
-    releaseDate: "Thứ Sáu, 18/04/2025",
-    description: "Âm Dương Lộ xoay quanh Trọng Nhân (Bạch Công Khanh thủ vai), trong một tình huống bất đắc dĩ, phải hành nghề tài xế xe cứu thương. Chuyến xe đầu tiên của Nhân là chở một xác chết về vùng núi hẻo lánh. Cùng với nhà báo tập sự Phong (Tuấn Dũng thủ vai), Trọng Nhân chứng kiến nhiều hiện tượng tâm linh kỳ bí. Cũng từ đây, anh phát hiện ra bí mật động trời mà ba mình đang cất giấu.",
-    theater: {
-      name: "",
-      address: "271 Nguyễn Trãi, Phường Nguyễn Cư Trinh, Quận 1, TP.HCM",
-      showtimes: ["11:10", "14:00", "16:50", "19:30", "21:45"]
+import { FaPlay } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa6';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
+
+const DiscriptionMovie = ({ movie, user }) => {
+  console.log("user hiện tại nè:", user);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [showtimes, setShowtimes] = useState([]);
+
+  useEffect(() => {
+    if (movie?._id) {
+      fetch(`/api/showtime/${movie._id}`)
+        .then(res => res.json())
+        .then(data => setShowtimes(data));
+    }
+  }, [movie]);
+
+  const toggleSeat = (seat) => {
+    setSelectedSeats((prev) =>
+      prev.includes(seat) ? prev.filter(s => s !== seat) : [...prev, seat]
+    );
+  };
+
+  const handleBooking = async () => {
+    if (!selectedTime || selectedSeats.length === 0) return alert('Chọn đầy đủ thông tin');
+
+    const [date, time] = selectedTime.split('|');
+    const showtime = showtimes.find(st => st.date === date && st.time === time);
+
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        showtimeId: showtime._id,
+        seats: selectedSeats,
+        paymentMethod: 'pay-later'
+      })
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(`Đặt vé thành công\nMã vé: ${data.newBooking.ticketCode}`);
+      setShowModal(false);
+    } else {
+      alert(data.message);
     }
   };
 
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [ticketCount, setTicketCount] = useState(1);
-
-  const handleBooking = () => {
-    if (selectedTime) {
-      alert(`Đặt thành công ${ticketCount} vé xem ${movie.title} lúc ${selectedTime}`);
+  const openModal = () => {
+    if (!user || !user.email) {
+      console.log("User chưa đăng nhập");
+      return alert('Bạn cần đăng nhập để đặt vé');
     }
+    console.log("Modal sẽ được mở");
+    setShowModal(true);
   };
+
+  if (!movie) return <div>Đang tải phim...</div>;
 
   return (
-    <div className="movie-detail">
-      <div className="movie-content">
-        <div className="movie-poster-container">
-          <div className="poster-wrapper">
-            <img 
-              src={movie.posterUrl} 
-              alt={movie.title}
-              className="movie-poster"
-            />
-            <div className="poster-overlay">
-              <span className="play-icon">▶</span>
-            </div>
-          </div>
-          
-          <div className="movie-tags">
-            {movie.meta.map((item, index) => (
-              <span 
-                key={index} 
-                className={`tag ${item.checked ? 'active' : ''}`}
+    <div className="movie-detail-banner">
+      <div className="poster">
+        <img src={movie.posterUrl} alt={movie.title} className="poster-img" />
+        <div className="age-tag">16+</div>
+        <div className="play-button"><FaPlay /></div>
+      </div>
+
+      <div className="info">
+        <h1 className="title">{movie.title}</h1>
+        <p className="subtitle">{movie.releaseDate?.slice(0, 10)} · {movie.duration} phút</p>
+
+        <div className="rating">
+          <FaStar className="star-icon" />
+          <span>{movie.avgRating?.toFixed(1) || 'Chưa có đánh giá'}</span>
+        </div>
+
+        <div className="content">
+          <span className="label">Nội dung:</span>
+          <span>{movie.description}</span>
+        </div>
+
+        <div className="extra">
+          <p><b>Ngày chiếu:</b> {new Date(movie.releaseDate).toLocaleDateString('vi-VN')}</p>
+          <p><b>Thể loại:</b> {movie.genre.join(', ')}</p>
+        </div>
+
+        <button className="book-button" onClick={openModal}>ĐẶT VÉ NGAY</button>
+      </div>
+
+      <Modal
+        isOpen={showModal}
+        onRequestClose={() => setShowModal(false)}
+        className="booking-modal"
+        overlayClassName="booking-overlay"
+      >
+        <h2>Chọn suất chiếu và ghế ngồi</h2>
+        <select
+          value={selectedTime}
+          onChange={(e) => setSelectedTime(e.target.value)}
+        >
+          <option value="">-- Chọn suất chiếu --</option>
+          {showtimes.map((st, index) => (
+            <option key={index} value={`${st.date}|${st.time}`}>
+              {new Date(st.date).toLocaleDateString('vi-VN')} - {st.time}
+            </option>
+          ))}
+        </select>
+
+        <div className="seat-grid">
+          {Array.from({ length: 40 }, (_, i) => {
+            const seat = `A${i + 1}`;
+            const isSelected = selectedSeats.includes(seat);
+            return (
+              <div
+                key={seat}
+                className={`seat ${isSelected ? 'selected' : ''}`}
+                onClick={() => toggleSeat(seat)}
               >
-                {item.label}
-              </span>
-            ))}
-          </div>
+                {seat}
+              </div>
+            );
+          })}
         </div>
 
-        <div className="movie-info-container">
-          <div className="movie-header">
-            <h1 className="movie-title">
-              {movie.title}
-              <span className="age-rating">{movie.ageRating}</span>
-            </h1>
-          </div>
-
-          <div className="movie-details">
-            <div className="detail-section">
-              <h2 className="section-title">MÔ TẢ</h2>
-              <p><strong>Đạo diễn:</strong> {movie.director}</p>
-              <p><strong>Diễn viên:</strong> {movie.cast}</p>
-              <p><strong>Khởi chiếu:</strong> {movie.releaseDate}</p>
-            </div>
-
-            <div className="detail-section">
-              <h2 className="section-title">NỘI DUNG PHIM</h2>
-              <p className="synopsis">{movie.description}</p>
-            </div>
-          </div>
-
-          <div className="showtime-section">
-            <h2 className="section-title">LỊCH CHIẾU</h2>
-            <div className="theater-info">
-              <h3>{movie.theater.name}</h3>
-              <p className="theater-address">{movie.theater.address}</p>
-            </div>
-
-            <div className="time-grid">
-              {movie.theater.showtimes.map((time) => (
-                <button
-                  key={time}
-                  className={`time-slot ${selectedTime === time ? 'selected' : ''}`}
-                  onClick={() => setSelectedTime(time)}
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="booking-section">
-        <div className="booking-form">
-          <h2 className="booking-title">ĐẶT VÉ</h2>
-          
-          <div className="form-group">
-            <label htmlFor="ticketCount">Số lượng vé:</label>
-            <select
-              id="ticketCount"
-              value={ticketCount}
-              onChange={(e) => setTicketCount(Number(e.target.value))}
-            >
-              {[1, 2, 3, 4, 5].map(num => (
-                <option key={num} value={num}>{num}</option>
-              ))}
-            </select>
-          </div>
-
-          <button
-            className={`book-button ${!selectedTime ? 'disabled' : ''}`}
-            onClick={handleBooking}
-            disabled={!selectedTime}
-          >
-            ĐẶT VÉ NGAY
-          </button>
-        </div>
-      </div>
+        <button
+          className="confirm-button"
+          onClick={handleBooking}
+          disabled={!selectedTime || selectedSeats.length === 0}
+        >
+          XÁC NHẬN ĐẶT VÉ
+        </button>
+      </Modal>
     </div>
   );
 };
+
 
 export default DiscriptionMovie;

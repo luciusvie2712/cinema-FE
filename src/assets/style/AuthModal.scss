@@ -1,76 +1,116 @@
 .auth-modal-overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.6);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    justify-content: center;
+    z-index: 999;
+    padding: 16px;
   }
   
   .auth-modal {
-    background: white;
-    padding: 2rem;
-    width: 400px;
-    max-width: 90%;
-    border-radius: 10px;
+    background: #fff;
+    padding: 32px 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     position: relative;
-    animation: fadeIn 0.3s ease;
-  }
+    animation: fadeIn 0.3s ease-in-out;
   
-  .auth-modal h2 {
-    margin-bottom: 1rem;
-    text-align: center;
-  }
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 24px;
+      color: #222;
+    }
   
-  .auth-modal input {
-    width: 100%;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
+    input {
+      display: block;
+      width: 395px;
+      margin-bottom: 16px;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: all 0.2s ease;
   
-  .auth-modal button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #ee5253;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
+      &:focus {
+        border-color: #007aff;
+        box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+        outline: none;
+      }
+    }
   
-  .auth-modal .switch-mode {
-    margin-top: 1rem;
-    text-align: center;
-  }
+    .btn-submit {
+      width: 420px;
+      padding: 12px;
+      background-color: #007aff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
   
-  .auth-modal .switch-mode span {
-    color: #10ac84;
-    cursor: pointer;
-    font-weight: bold;
-  }
+      &:hover {
+        background-color: #005fcc;
+      }
   
-  .auth-modal .error {
-    color: red;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-  }
+      &:disabled {
+        background-color: #a0c4ff;
+        cursor: not-allowed;
+      }
+    }
   
-  .close-btn {
-    position: absolute;
-    top: 10px; right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 1.25rem;
-    cursor: pointer;
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+  
+      &:hover {
+        color: #111;
+      }
+    }
+  
+    .switch-mode {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+  
+      span {
+        color: #007aff;
+        cursor: pointer;
+        font-weight: 500;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
   }
   
   @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   

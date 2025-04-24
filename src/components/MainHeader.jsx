@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/style/MainHeader.scss';
-<<<<<<< HEAD
 
-const MainHeader = ({ onAuthClick }) => {
-=======
-const MainHeader = () => {
->>>>>>> 89b932912224f6e3d591b161311eb070892ab40a
+const MainHeader = ({ onAuthClick, user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('PHIM ĐANG CHIẾU');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -34,14 +30,25 @@ const MainHeader = () => {
           </div>
           
           <div className="auth-buttons">
-            <button className="auth-btn login-btn" onClick={() => onAuthClick('login')}>
-              <span className="btn-icon">👤</span>
-              <span className="btn-text">ĐĂNG NHẬP</span>
-            </button>
-            <button className="auth-btn register-btn" onClick={() => onAuthClick('register')}>
-              <span className="btn-icon">✍️</span>
-              <span className="btn-text">ĐĂNG KÝ</span>
-            </button>
+            {user ? (
+              <div className="user-info">
+                <span className="user-name">👤 {user.fullName}</span>
+                <button className="logout-btn" onClick={onLogout}>
+                  ĐĂNG XUẤT
+                </button>
+              </div>
+            ) : (
+              <>
+                <button className="auth-btn login-btn" onClick={() => onAuthClick('login')}>
+                  <span className="btn-icon">👤</span>
+                  <span className="btn-text">ĐĂNG NHẬP</span>
+                </button>
+                <button className="auth-btn register-btn" onClick={() => onAuthClick('register')}>
+                  <span className="btn-icon">✍️</span>
+                  <span className="btn-text">ĐĂNG KÝ</span>
+                </button>
+              </>
+            )}
           </div>
           
           <button 

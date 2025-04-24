@@ -1,285 +1,199 @@
-// DiscriptionMovie.scss
-
-/* ================ Biến màu ================ */
-$primary: #e50914; // Màu đỏ chủ đạo
-$secondary: #f5f5f5; // Màu nền
-$dark: #222; // Màu chữ
-$light: #fff; // Màu trắng
-$accent: #ff9f1c; // Màu nhấn
-$gray: #6c757d; // Màu xám
-
-/* ================ Hiệu ứng ================ */
-@mixin hover-effect {
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-}
-
-@mixin card-style {
-  background: $light;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* ================ Header ================ */
-.movie-header {
-  background: linear-gradient(135deg, $primary 0%, darken($primary, 10%) 100%);
-  color: $light;
-  padding: 1rem 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 10px rgba(84, 66, 39, 0.2);
-    
-  h1 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: white;
-
-    .age-rating {
-      background: $accent;
-      padding: 0.2rem 0.8rem;
-      border-radius: 4px;
-      font-size: 1rem;
-      margin-left: 1rem;
-      vertical-align: middle;
-    }
-  }
-}
-
-/* ================ Layout chính ================ */
-.movie-detail {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  color: $dark;
-}
-
-.movie-content {
+.movie-detail-banner {
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
-  margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-}
-
-/* ================ Poster phim ================ */
-.movie-poster-container {
-  flex: 0 0 300px;
-  position: relative;
-
-  .poster-wrapper {
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    @include hover-effect;
-
-    .movie-poster {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .poster-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-
-      .play-icon {
-        color: $light;
-        font-size: 3rem;
-        text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-      }
-    }
-
-    &:hover .poster-overlay {
-      opacity: 1;
-    }
-  }
-
-  .movie-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-
-    .tag {
-      padding: 0.3rem 0.8rem;
-      background: $secondary;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      transition: all 0.2s;
-
-      &.active {
-        background: $primary;
-        color: $light;
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-/* ================ Thông tin phim ================ */
-.movie-info-container {
-  flex: 1;
-
-  .movie-details {
-
-    .detail-section {
-      margin-bottom: 1.5rem;
-        
-      .section-title {
-        color: $primary;
-        font-size: 1.3rem;
-        margin-bottom: 0.8rem;
-        padding-bottom: 0.3rem;
-        border-bottom: 2px solid $secondary;
-      }
-
-      p {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-        color: #f5f5f5;
-      }
-
-      .synopsis {
-        font-style: italic;
-        color: white;
-
-      }
-    }
-  }
-
-  .showtime-section {
-    margin-top: 2rem;
-
-    .theater-info {
-      margin-bottom: 1rem;
-
-      h3 {
-        color: $primary;
-        margin-bottom: 0.3rem;
-      }
-
-      .theater-address {
-        color: $gray;
-      }
-    }
-
-    .time-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      gap: 0.8rem;
-
-      .time-slot {
-        padding: 0.6rem;
-        background: $secondary;
-        border: none;
-        border-radius: 6px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-          background: darken($secondary, 10%);
-        }
-
-        &.selected {
-          background: $primary;
-          color: $light;
-          font-weight: bold;
-          transform: scale(1.05);
-        }
-      }
-    }
-  }
-}
-
-/* ================ Phần đặt vé ================ */
-.booking-section {
-  @include card-style;
   padding: 2rem;
-  margin-top: 2rem;
+  background: #0f0f0f;
+  color: #fff;
 
-  .booking-form {
-    max-width: 500px;
-    margin: 0 auto;
+  .poster {
+    position: relative;
+    flex: 1 1 300px;
+    max-width: 400px;
 
-    .booking-title {
-      color: $primary;
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
+    .poster-img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     }
 
-    .form-group {
-      margin-bottom: 1.5rem;
+    .age-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: crimson;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
 
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
+    .play-button {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: #ff4444;
+      padding: 10px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+
+      &:hover {
+        background: #e63946;
       }
+    }
+  }
 
-      select {
-        width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 1rem;
+  .info {
+    flex: 1 1 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffd700;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #bbb;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .star-icon {
+        color: gold;
+      }
+    }
+
+    .content {
+      .label {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+      span {
+        display: block;
+        margin-top: 4px;
+        line-height: 1.5;
+      }
+    }
+
+    .extra {
+      p {
+        margin: 4px 0;
+        b {
+          color: #ccc;
+        }
       }
     }
 
     .book-button {
-      width: 100%;
-      padding: 1rem;
-      background: $primary;
-      color: $light;
+      margin-top: 1rem;
+      padding: 12px 20px;
+      background: #e50914;
+      color: white;
       border: none;
-      border-radius: 6px;
-      font-size: 1.1rem;
+      border-radius: 10px;
       font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.2s;
-      @include hover-effect;
+      transition: background 0.3s;
 
-      &:disabled {
-        background: $gray;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
+      &:hover {
+        background: #c40812;
       }
     }
   }
 }
 
-/* ================ Responsive ================ */
-@media (max-width: 600px) {
-  .movie-header h1 {
-    font-size: 1.5rem;
+// Booking Modal
+.booking-modal {
+  position: fixed; /* Đảm bảo Modal cũng có vị trí cố định */
+  top: 50%; /* Canh giữa theo chiều dọc */
+  left: 50%; /* Canh giữa theo chiều ngang */
+  transform: translate(-50%, -50%); /* Đẩy nó về giữa */
+  background-color: white; /* Màu nền trắng */
+  padding: 20px; /* Padding bên trong Modal */
+  border-radius: 8px; /* Làm tròn góc */
+  z-index: 1001; /* Đặt modal lên trên overlay */
+  max-width: 600px; /* Đặt chiều rộng tối đa của Modal */
+  width: 80%;
 
-    .age-rating {
-      font-size: 0.8rem;
-      margin-left: 0.5rem;
+  h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #ffd700;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background: #2c2c2c;
+    color: white;
+  }
+
+  .seat-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    margin-bottom: 1.5rem;
+
+    .seat {
+      padding: 10px;
+      background: #444;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &.selected {
+        background: #ffd700;
+        color: black;
+        font-weight: bold;
+      }
+
+      &:hover {
+        background: #666;
+      }
     }
   }
 
-  .time-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+  .confirm-button {
+    width: 100%;
+    padding: 12px;
+    font-weight: bold;
+    background: #00b894;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: #019875;
+    }
+
+    &:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
   }
 }
-.section-title{
-    color: #e53509ce;
+
+.booking-overlay {
+  position: fixed; /* Đảm bảo Overlay chiếm toàn bộ màn hình */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Màu nền mờ */
+  z-index: 1000;
 }
