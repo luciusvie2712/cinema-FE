@@ -5,9 +5,45 @@
     <link rel="icon" type="image/svg+xml" href="/src/assets/image/logo-cinema.jpeg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CINEMA | HỆ THỐNG ĐẶT VÉ XEM PHIM TRỰC TUYẾN</title>
+    <style>
+      df-messenger {
+        --df-messenger-button-titlebar-color: #b91c1c; /* Đỏ đậm */
+        --df-messenger-button-titlebar-font-color: #ffffff;
+        --df-messenger-chat-background-color: #111827; /* Đen xám đậm */
+        --df-messenger-user-message: #ef4444; /* Đỏ nhạt */
+        --df-messenger-bot-message: #374151; /* Xám đậm */
+        --df-messenger-font-color: #f3f4f6;
+    
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10000;
+        
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+      }
+    
+      df-messenger .df-messenger-icon {
+        width: 64px;
+        height: 64px;
+      }
+    
+      df-messenger .df-chat-wrapper {
+        border-radius: 10px;
+        overflow: hidden;
+      }
+    </style>    
+    
   </head>
   <body>
     <div id="root"></div>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="Boxchat"
+      agent-id="c89a0564-7cc1-40e4-aeb1-6ad2a5eb860c"
+      language-code="vi"
+    ></df-messenger>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

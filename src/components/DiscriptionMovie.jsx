@@ -12,6 +12,10 @@ const DiscriptionMovie = ({ movie, user }) => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [showtimes, setShowtimes] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [paymentMethod, setPaymentMethod] = useState('pay-later');
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
+
 
   useEffect(() => {
     if (movie?._id) {
@@ -20,6 +24,9 @@ const DiscriptionMovie = ({ movie, user }) => {
         .then(data => setShowtimes(data));
     }
   }, [movie]);
+  useEffect(() => {
+    setTotalPrice(selectedSeats.length * 50000)
+  }, [selectedSeats])
 
   const toggleSeat = (seat) => {
     setSelectedSeats((prev) =>
@@ -29,10 +36,10 @@ const DiscriptionMovie = ({ movie, user }) => {
 
   const handleBooking = async () => {
     if (!selectedTime || selectedSeats.length === 0) return alert('Chọn đầy đủ thông tin');
-
+  
     const [date, time] = selectedTime.split('|');
     const showtime = showtimes.find(st => st.date === date && st.time === time);
-
+  
     const res = await fetch('/api/booking', {
       method: 'POST',
       headers: {
@@ -42,19 +49,24 @@ const DiscriptionMovie = ({ movie, user }) => {
       body: JSON.stringify({
         showtimeId: showtime._id,
         seats: selectedSeats,
-        paymentMethod: 'pay-later'
+        paymentMethod
       })
     });
-
+  
     const data = await res.json();
     if (res.ok) {
-      alert(`Đặt vé thành công\nMã vé: ${data.newBooking.ticketCode}`);
-      setShowModal(false);
+      if (paymentMethod === 'pay-online') {
+        // Giả lập QR bằng Google Chart
+        const qr = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=Thanh+toan+${totalPrice}+VND+-+Ma+ve+${data.newBooking.ticketCode}`;
+        setQrCodeUrl(qr);
+      } else {
+        alert(`Đặt vé thành công\nMã vé: ${data.newBooking.ticketCode}`);
+        setShowModal(false);
+      }
     } else {
       alert(data.message);
     }
   };
-
   const openModal = () => {
     if (!user || !user.email) {
       console.log("User chưa đăng nhập");
@@ -119,6 +131,7 @@ const DiscriptionMovie = ({ movie, user }) => {
           {Array.from({ length: 40 }, (_, i) => {
             const seat = `A${i + 1}`;
             const isSelected = selectedSeats.includes(seat);
+
             return (
               <div
                 key={seat}
@@ -130,7 +143,11 @@ const DiscriptionMovie = ({ movie, user }) => {
             );
           })}
         </div>
-
+        <div className="price-summary">
+          <p>Tổng số ghế: {selectedSeats.length}</p>
+          <p>Giá mỗi vé: 50.00 VND</p>
+          <h3>Tổng tiền: {totalPrice.toLocaleString('vi-VN')} VND</h3>
+        </div>
         <button
           className="confirm-button"
           onClick={handleBooking}

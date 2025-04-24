@@ -3,15 +3,13 @@ import { Link } from 'react-router-dom';
 import '../assets/style/MainHeader.scss';
 
 const MainHeader = ({ onAuthClick, user, onLogout }) => {
-  const [activeTab, setActiveTab] = useState('PHIM ĐANG CHIẾU');
+  const [activeTab, setActiveTab] = useState('RẠP PHIM');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    'LỊCH CHIẾU',
-    'PHIM ĐANG CHIẾU',
-    'TIN TỨC & KHUYẾN MÃI',
-    'VÉ CỦA TÔI',
-    'BLOG PHIM'
+    { label: 'RẠP PHIM', path: '/' },
+    { label: 'VÉ CỦA TÔI', path: '/ve-cua-toi' },
+    { label: 'BLOG PHIM', path: '/blog-phim' }
   ];
 
   return (
@@ -24,11 +22,11 @@ const MainHeader = ({ onAuthClick, user, onLogout }) => {
               <span className="logo-i">I</span>
               <span className="logo-n">N</span>
               <span className="logo-e">E</span>
-              <span className="logo-n2">N</span>
+              <span className="logo-n2">M</span>
               <span className="logo-e2">E</span>
             </Link>
           </div>
-          
+
           <div className="auth-buttons">
             {user ? (
               <div className="user-info">
@@ -50,8 +48,8 @@ const MainHeader = ({ onAuthClick, user, onLogout }) => {
               </>
             )}
           </div>
-          
-          <button 
+
+          <button
             className="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
@@ -59,19 +57,19 @@ const MainHeader = ({ onAuthClick, user, onLogout }) => {
           </button>
         </div>
       </div>
-      
+
       <div className={`header-bottom ${isMenuOpen ? 'open' : ''}`}>
         <div className="container">
           <nav className="main-nav">
             <ul>
               {navItems.map((item, index) => (
-                <li 
+                <li
                   key={index}
-                  className={activeTab === item ? 'active' : ''}
-                  onClick={() => setActiveTab(item)}
+                  className={activeTab === item.label ? 'active' : ''}
+                  onClick={() => setActiveTab(item.label)}
                 >
-                  <Link to={`/${item.toLowerCase().replace(/ /g, '-')}`}>
-                    {item}
+                  <Link to={item.path}>
+                    {item.label}
                     <span className="nav-underline"></span>
                     <span className="nav-hover-effect"></span>
                   </Link>
@@ -81,7 +79,7 @@ const MainHeader = ({ onAuthClick, user, onLogout }) => {
           </nav>
         </div>
       </div>
-      
+
       <div className="header-decoration">
         <div className="film-strip"></div>
         <div className="spotlight"></div>
