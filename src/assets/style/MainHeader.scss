@@ -1,229 +1,299 @@
-// Variables
-$primary-color: #e50914;
-$secondary-color: #f5f5f5;
-$dark-bg: #141414;
-$text-color: #ffffff;
-$hover-color: #ff6b6b;
+// MainHeader.scss
 
+// Variables
+$primary-color: #e50914; // Netflix red
+$dark-color: #0f0f13;
+$light-color: #ffffff;
+$accent-color: #00d4ff;
+$text-color: rgba(255, 255, 255, 0.9);
+$transition-speed: 0.4s;
+$easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+// Base styles
 .cinene-header {
   position: relative;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+  background: linear-gradient(to bottom, rgba($dark-color, 0.98) 0%, rgba($dark-color, 0.9) 100%);
   color: $text-color;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   overflow: hidden;
-}
+  border-bottom: 1px solid rgba($primary-color, 0.2);
 
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  position: relative;
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-container {
-  .logo {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    text-decoration: none;
-    font-size: 2.9rem;
-    font-weight: 800;
-    color: $primary-color;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: all 0.3s ease;
-    
-    span {
-      display: inline-block;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
-    
-    &:hover {
+  }
+
+  // Header top section
+  .header-top {
+    padding: 1.2rem 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  // Logo styles with animation
+  .logo-container {
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      color: $light-color;
+      position: relative;
+      overflow: hidden;
+      padding: 0.5rem 0;
+
       span {
-        animation: logoBounce 0.5s ease;
-        
-        @for $i from 1 through 6 {
-          &:nth-child(#{$i}) {
-            animation-delay: $i * 0.05s;
+        display: inline-block;
+        transition: all 0.3s $easing;
+        text-shadow: 0 0 10px rgba($primary-color, 0.3);
+      }
+
+      .logo-c { color: $primary-color; transform: translateY(0); }
+      .logo-i { color: lighten($primary-color, 10%); transform: translateY(0); }
+      .logo-n { color: $light-color; transform: translateY(0); }
+      .logo-e { color: $accent-color; transform: translateY(0); }
+      .logo-n2 { color: $light-color; transform: translateY(0); }
+      .logo-e2 { color: $accent-color; transform: translateY(0); }
+
+      &:hover {
+        .logo-c { transform: translateY(-5px); }
+        .logo-i { transform: translateY(5px); }
+        .logo-n { transform: translateY(-5px); }
+        .logo-e { transform: translateY(5px); }
+        .logo-n2 { transform: translateY(-5px); }
+        .logo-e2 { transform: translateY(5px); }
+      }
+    }
+  }
+
+  // Auth buttons
+  .auth-buttons {
+    display: flex;
+    gap: 1rem;
+
+    .auth-btn {
+      position: relative;
+      background: transparent;
+      border: 2px solid rgba($light-color, 0.2);
+      color: $light-color;
+      padding: 0.6rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all $transition-speed $easing;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .btn-icon {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba($primary-color, 0.2), rgba($accent-color, 0.1));
+        z-index: -1;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform $transition-speed $easing;
+      }
+
+      &:hover {
+        border-color: $primary-color;
+        box-shadow: 0 0 15px rgba($primary-color, 0.3);
+
+        &::before {
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+
+        .btn-icon {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .login-btn:hover {
+      color: $primary-color;
+    }
+
+    .register-btn:hover {
+      color: $accent-color;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      .user-name {
+        font-weight: 500;
+        color: $accent-color;
+      }
+
+      .logout-btn {
+        background: rgba($primary-color, 0.2);
+        border: none;
+        color: $light-color;
+        padding: 0.6rem 1.5rem;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all $transition-speed $easing;
+        position: relative;
+        overflow: hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(45deg, transparent, rgba($primary-color, 0.4), transparent);
+          transform: translateX(-100%);
+          transition: transform 0.6s $easing;
+        }
+
+        &:hover {
+          background: rgba($primary-color, 0.4);
+          box-shadow: 0 0 15px rgba($primary-color, 0.3);
+
+          &::after {
+            transform: translateX(100%);
           }
         }
       }
-      
-      .logo-c { color: #ff000067; }
-      .logo-i { color: #ff660048; }
-      .logo-n { color: #ffcc005e; }
-      .logo-e { color: #33cc335a; }
-      .logo-n2 { color: #3399ff58; }
-      .logo-e2 { color: #cc33ff56; }
     }
   }
-}
 
-@keyframes logoBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.auth-buttons {
-  display: flex;
-  gap: 1rem;
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  
-    .user-name {
-      font-weight: 500;
-      color: #333;
-    }
-  
-    .logout-btn {
-      background-color: #e74c3c;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: #c0392b;
-      }
-    }
-  }
-  .auth-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    position: relative;
-    overflow: hidden;
-    
-    .btn-icon {
-      transition: transform 0.3s ease;
-    }
-    
-    .btn-text {
-      position: relative;
-      z-index: 2;
-    }
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.3s ease;
-      z-index: 1;
-    }
-    
-    &:hover {
-      .btn-icon {
-        transform: scale(1.2);
-      }
-      
-      &::before {
-        transform: scaleX(1);
-        transform-origin: left;
-      }
-    }
-  }
-  
-  .login-btn {
+  // Mobile menu toggle
+  .mobile-menu-toggle {
+    display: none;
     background: transparent;
-    color: $text-color;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: $primary-color;
-    }
-  }
-  
-  .register-btn {
-    background: $primary-color;
-    color: $text-color;
-    
-    &:hover {
-      background: darken($primary-color, 10%);
-      box-shadow: 0 0 15px rgba($primary-color, 0.5);
-    }
-  }
-}
+    border: none;
+    color: $light-color;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    z-index: 10;
 
-.header-bottom {
-  background: rgba(0, 0, 0, 0.8);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  
-  .main-nav {
-    ul {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      
-      li {
-        position: relative;
-        
-        a {
-          display: block;
-          padding: 1rem 1.5rem;
-          color: $text-color;
-          text-decoration: none;
-          font-weight: 500;
+    &:hover {
+      color: $primary-color;
+      transform: scale(1.1);
+    }
+  }
+
+  // Navigation styles
+  .header-bottom {
+    background: rgba($dark-color, 0.95);
+    border-top: 1px solid rgba($primary-color, 0.1);
+    transition: all 0.5s $easing;
+
+    &.open {
+      max-height: 500px;
+    }
+
+    .main-nav {
+      ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 1.5rem;
+
+        li {
           position: relative;
-          transition: color 0.3s ease;
-          
+          padding: 1.2rem 0;
+
+          a {
+            color: $text-color;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+
+            &:hover {
+              color: $light-color;
+            }
+          }
+
+          // Underline animation
           .nav-underline {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 0;
-            height: 3px;
-            background: $primary-color;
-            transition: width 0.3s ease;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, $primary-color, $accent-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s $easing;
           }
-          
+
+          // Hover effect
           .nav-hover-effect {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba($primary-color, 0.1);
+            top: -10px;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, rgba($accent-color, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translateX(-50%) scale(0);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.5s $easing;
           }
-        }
-        
-        &:hover, &.active {
-          a {
-            color: $primary-color;
-            
+
+          &:hover {
             .nav-underline {
-              width: 100%;
+              transform: scaleX(1);
+              transform-origin: left;
             }
-            
+
             .nav-hover-effect {
+              transform: translateX(-50%) scale(1);
+              opacity: 1;
+            }
+          }
+
+          // Active state
+          &.active {
+            a {
+              color: $light-color;
+              text-shadow: 0 0 10px rgba($primary-color, 0.5);
+            }
+
+            .nav-underline {
+              transform: scaleX(1);
+              background: $primary-color;
+            }
+
+            .nav-hover-effect {
+              background: radial-gradient(circle, rgba($primary-color, 0.3) 0%, transparent 70%);
+              transform: translateX(-50%) scale(1);
               opacity: 1;
             }
           }
@@ -231,69 +301,123 @@ $hover-color: #ff6b6b;
       }
     }
   }
-}
 
-.header-decoration {
-  .film-strip {
+  // Decorative elements
+  .header-decoration {
     position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    opacity: 0.7;
-  }
-  
-  .spotlight {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 50%, rgba(229, 9, 20, 0.3), transparent 60%);
+    top: 0;
+    left: 0;
     pointer-events: none;
-    z-index: -1;
-  }
-}
+    z-index: 1;
 
-
-// Mobile responsive styles
-.mobile-menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: $text-color;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .mobile-menu-toggle {
-    display: block;
-  }
-  
-  .auth-buttons {
-    display: none;
-  }
-  
-  .header-bottom {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-    
-    &.open {
-      max-height: 500px;
+    .film-strip {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background: url('data:image/svg+xml;utf8,<svg width="100" height="20" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="0" width="20" height="20" fill="rgba(229,9,20,0.05)"/><rect x="70" y="0" width="20" height="20" fill="rgba(229,9,20,0.05)"/></svg>');
+      opacity: 0.1;
+      animation: filmStripScroll 20s linear infinite;
     }
-    
-    .main-nav ul {
-      flex-direction: column;
-      
-      li {
-        text-align: center;
-        
-        a {
-          padding: 1rem;
+
+    .spotlight {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at top, rgba($accent-color, 0.03) 0%, transparent 70%);
+      animation: spotlightPan 15s alternate infinite;
+    }
+  }
+
+  // Animations
+  @keyframes filmStripScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 0; }
+  }
+
+  @keyframes spotlightPan {
+    0% { transform: translateX(-20%) translateY(-10%); }
+    100% { transform: translateX(20%) translateY(10%); }
+  }
+
+  // Responsive styles
+  @media (max-width: 992px) {
+    .container {
+      padding: 0 1.5rem;
+    }
+
+    .header-bottom {
+      .main-nav ul {
+        gap: 1rem;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+
+    .header-bottom {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      max-height: 0;
+      overflow: hidden;
+
+      .main-nav ul {
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem 0;
+
+        li {
+          padding: 0.8rem 2rem;
+
+          a {
+            display: inline-block;
+            width: 100%;
+          }
         }
       }
+
+      &.open {
+        max-height: 500px;
+      }
+    }
+
+    .auth-buttons {
+      position: absolute;
+      top: 100%;
+      right: 2rem;
+      flex-direction: column;
+      background: rgba($dark-color, 0.95);
+      padding: 1rem;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+
+      &.show {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo {
+      font-size: 1.8rem !important;
+    }
+
+    .container {
+      padding: 0 1rem;
     }
   }
 }

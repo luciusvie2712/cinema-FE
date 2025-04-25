@@ -66,8 +66,12 @@ ChartJS.register(
         }
       }
     };
-  
-    return <Line data={chartData} options={options} />;
+
+    return (
+      <div className="revenue-chart-container">
+        <Line data={chartData} options={options} className="chartjs-animate" />
+      </div>
+    )
   };
   
   export default RevenueChart;

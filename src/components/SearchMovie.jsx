@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../assets/style/SearchMovie.scss';
 import axiosInstance from '../../axiosInstance'
-import { all } from 'axios';
+import { Link } from 'react-router-dom';
 
 const SearchMovie = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -75,7 +75,7 @@ const SearchMovie = () => {
 
       <div className="movies-grid">
         {filteredMovies.map(movie => (
-          <div className="movie-card" key={movie._id}>
+          <Link className="movie-card" key={movie._id} to={`/discription/${movie._id}`}>
             <img src={movie.posterUrl} alt={movie.title} className="movie-poster" />
             <div className="movie-content">
               <h2 className="movie-title">{movie.title}</h2>
@@ -85,7 +85,7 @@ const SearchMovie = () => {
               <p><strong>Kết thúc:</strong> {new Date(movie.endDate).toLocaleDateString()}</p>
               <p><strong>Trạng thái:</strong> {movie.status === 'showing' ? 'Đang chiếu' : movie.status === 'coming' ? 'Sắp chiếu' : 'Đã kết thúc'}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

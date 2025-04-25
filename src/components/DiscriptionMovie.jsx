@@ -14,7 +14,7 @@ const DiscriptionMovie = ({ movie, user }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState('pay-online');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
-  const [showModal, setShowModal] = useState(false); // ✅ Thêm dòng này
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (movie?._id) {
@@ -32,7 +32,7 @@ const DiscriptionMovie = ({ movie, user }) => {
   }, [movie]);
   
   useEffect(() => {
-    setTotalPrice(selectedSeats.length * 50000);
+    setTotalPrice(selectedSeats.length * 49000);
   }, [selectedSeats]);
 
   useEffect(() => {
@@ -65,8 +65,12 @@ const DiscriptionMovie = ({ movie, user }) => {
         paymentMethod
       })
     });
+    console.log('📦 Raw res:', res);
+    console.log('📡 Status:', res.status);
+    console.log('📋 Headers:', res.headers);
   
     const data = await res.json();
+    console.log(data)
     if (res.ok) {
       setSeatData((prevSeats) =>
         prevSeats.map((seat) =>
@@ -75,14 +79,23 @@ const DiscriptionMovie = ({ movie, user }) => {
             : seat
         )
       );
-  
+      if(data?.payment?.checkoutUrl)
+      {
+        window.open(data.payment.checkoutUrl,'_blank')
+      }
       if (paymentMethod === 'pay-online') {
-        const qr = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=Thanh+toan+${totalPrice}+VND+-+Ma+ve+${data.newBooking.ticketCode}`;
-        setQrCodeUrl(qr);
+        setQrCodeUrl(data.payment.qrCode);
       } else {
         alert(`Đặt vé thành công\nMã vé: ${data.newBooking.ticketCode}`);
         setShowModal(false);
-      }
+        setSeatData(prevSeats =>
+          prevSeats.map(seat =>
+            selectedSeats.includes(seat.seatNumber)
+              ? { ...seat, status: '' }
+              : seat
+          )
+        );
+      }        
     } else {
       alert(data.message);
     }
@@ -103,7 +116,7 @@ const DiscriptionMovie = ({ movie, user }) => {
   if (!movie) return <div>Đang tải phim...</div>;
 
   return (
-    <div className="movie-detail-banner">
+    <div className="movie-detail-banner" >
       <div className="poster">
         <img src={movie.posterUrl} alt={movie.title} className="poster-img" />
         <div className="age-tag">16+</div>
@@ -168,6 +181,27 @@ const DiscriptionMovie = ({ movie, user }) => {
           <p>Tổng số ghế: {selectedSeats.length}</p>
           <p>Giá mỗi vé: 50.000 VND</p>
           <h3>Tổng tiền: {totalPrice.toLocaleString('vi-VN')} VND</h3>
+        </div>
+
+        <div className="payment-method">
+          <label>
+            <input
+              type="radio"
+              value="pay-online"
+              checked={paymentMethod === 'pay-online'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            Thanh toán online
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="counter"
+              checked={paymentMethod === 'counter'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            Thanh toán tại quầy
+          </label>
         </div>
 
         <button

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import '../assets/style/SlideMovie.scss';
 import '../assets/themify-icons/themify-icons.css';
-import axiosInstance from '../../axiosInstance'
+import axiosInstance from '../../axiosInstance';
 
 const SlideMovieComing = () => {
   const [movies, setMovies] = useState([]);
@@ -28,30 +28,38 @@ const SlideMovieComing = () => {
 
   useEffect(() => {
     const slider = sliderRef.current;
-
+  
     const checkScroll = () => {
       if (!slider) return;
+      
       const { scrollLeft, scrollWidth, clientWidth } = slider;
-      setShowLeftButton(scrollLeft > 0);
-      setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
-    };
+      const tolerance = 5;
+      
+      setShowLeftButton(scrollLeft > tolerance);
 
+      setShowRightButton(scrollLeft < scrollWidth - clientWidth - tolerance);
+    };
+  
     if (slider) {
       slider.addEventListener("scroll", checkScroll);
+      const resizeObserver = new ResizeObserver(checkScroll);
+      resizeObserver.observe(slider);
       checkScroll();
-    }
-
-    return () => {
-      if (slider) {
+      
+      return () => {
         slider.removeEventListener("scroll", checkScroll);
-      }
-    };
-  }, []);
+        resizeObserver.disconnect();
+      };
+    }
+  }, [movies]);
 
   const scrollSlider = (direction) => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -300 : 300,
+      const slider = sliderRef.current;
+      const scrollAmount = direction === "left" ? -slider.clientWidth : slider.clientWidth;
+      
+      slider.scrollBy({
+        left: scrollAmount,
         behavior: "smooth",
       });
     }
@@ -87,7 +95,7 @@ const SlideMovieComing = () => {
                 </div>
                 <h2 className="name">{movie.title || "Untitled"}</h2>
                 <p className="address">{movie.genre || "Unknown Genre"}</p>
-                <p className="star-rating">★★★★★ {movie.avgRating || "0"} sao</p>
+                
               </Link>
             ))
           ) : (

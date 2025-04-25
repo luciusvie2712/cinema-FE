@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import axiosInstance from '../../axiosInstance'
 import '../assets/style/AdminMoviePage.scss'
 import Sidebar from '../components/Admin/Sidebar';
+
+const Loader = () => <div className="loader">Đang tải...</div>;
 
 export default function MovieManager() {
   const [movies, setMovies] = useState([])
@@ -17,7 +18,7 @@ export default function MovieManager() {
   })
   const [editingId, setEditingId] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)  // Error state to show error messages
+  const [error, setError] = useState(null)
 
   const fetchMovies = async () => {
     setLoading(true)
@@ -40,8 +41,10 @@ export default function MovieManager() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
+    setError(null)
+
     try {
-      setLoading(true)
       if (editingId) {
         await axiosInstance.put(`/api/movie/admin-movie/${editingId}`, form)
       } else {
@@ -51,10 +54,12 @@ export default function MovieManager() {
         title: '', genre: '', description: '', posterUrl: '', bannerUrl: '', releaseDate: '', endDate: ''
       })
       setEditingId(null)
-      fetchMovies()
+      await fetchMovies();
     } catch (err) {
-      setError("Có lỗi khi thêm hoặc cập nhật phim.")
+      console.error("Lỗi khi thêm/cập nhật phim:", err.response?.data || err.message)
+      setError(err.response?.data?.message || "Có lỗi khi thêm hoặc cập nhật phim.")
     }
+
     setLoading(false)
   }
 
@@ -67,7 +72,7 @@ export default function MovieManager() {
     if (window.confirm('Bạn có chắc chắn muốn xoá phim này?')) {
       try {
         await axiosInstance.delete(`/api/movie/admin-movie/${id}`)
-        fetchMovies()
+        await fetchMovies()
       } catch (err) {
         setError("Có lỗi khi xóa phim.")
       }
@@ -79,7 +84,7 @@ export default function MovieManager() {
         <Sidebar />
         <div className="movie-manager__content">
             <h2>Quản lý phim</h2>
-            {error && <div className="error-message">{error}</div>} {/* Show error if any */}
+            {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleSubmit} className="movie-form">
                 <input name="title" value={form.title} onChange={handleChange} placeholder="Tên phim" required />
                 <input name="genre" value={form.genre} onChange={handleChange} placeholder="Thể loại" required />
@@ -92,7 +97,7 @@ export default function MovieManager() {
             </form>
 
             <div className="movie-list">
-                {loading ? <div>Đang tải...</div> : movies.map((movie) => (
+                {loading ? <Loader /> : movies.map((movie) => (
                 <div className="movie-card" key={movie._id}>
                     <img src={movie.posterUrl} alt={movie.title} />
                     <div className="info">

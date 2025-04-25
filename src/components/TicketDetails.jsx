@@ -23,7 +23,7 @@ const TicketDetails = () => {
 
     const handleCancelBooking = async (bookingId) => {
         try {
-            await axiosInstance.delete(`/api/bookings/cancel/${bookingId}`);
+            await axiosInstance.delete(`/api/booking/cancel/${bookingId}`);
             setBookings(bookings.filter(booking => booking._id !== bookingId));
         } catch (error) {
             console.error("Không thể hủy vé:", error);
@@ -55,9 +55,9 @@ const TicketDetails = () => {
                             <p><strong>Số ghế:</strong> {booking.seats.join(', ')}</p>
                             <p><strong>Tổng tiền:</strong> {booking.totalPrice} VND</p>
                             <p><strong>Trạng thái thanh toán:</strong> {booking.paymentStatus}</p>
-                            {booking.paymentStatus === 'pending' && (
+                           
                                 <button className="cancel-btn" onClick={() => handleCancelBooking(booking._id)}>Hủy vé</button>
-                            )}
+
                         </div>
                     ))
                 ) : (

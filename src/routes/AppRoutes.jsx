@@ -7,6 +7,8 @@ import ShowtimePage from '../pages/ShowtimeManager'
 import AdminBookingList from "../pages/AdminBookingList";
 import AccountManager from "../pages/AccountManager";
 import MyTicketPage from "../pages/MyTicketPage";
+import PaymentSuccess from '../pages/payment-success';
+import PaymentCancel from '../pages/payment-cancel';
 const AppRoutes = () => {
     return (
         <Router>
@@ -19,6 +21,8 @@ const AppRoutes = () => {
                 <Route path="/tickets-manager" element={<AdminBookingList />} />
                 <Route path="/users-manager" element={<AccountManager />} />
                 <Route path="/my-ticket" element={<MyTicketPage />} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
+                <Route path="/payment-cancel" element={<PaymentCancel />} />
             </Routes>
         </Router>
     )

@@ -27,35 +27,44 @@ const SlideMovieShowing = () => {
   }, []);
 
   useEffect(() => {
-    const slider = sliderRef.current;
-
-    const checkScroll = () => {
-      if (!slider) return;
-      const { scrollLeft, scrollWidth, clientWidth } = slider;
-      setShowLeftButton(scrollLeft > 0);
-      setShowRightButton(scrollLeft < scrollWidth - clientWidth - 1);
-    };
-
-    if (slider) {
-      slider.addEventListener("scroll", checkScroll);
-      checkScroll();
-    }
-
-    return () => {
+      const slider = sliderRef.current;
+    
+      const checkScroll = () => {
+        if (!slider) return;
+        
+        const { scrollLeft, scrollWidth, clientWidth } = slider;
+        const tolerance = 5 // Độ dung sai để tránh trường hợp số thập phân
+        
+        setShowLeftButton(scrollLeft > tolerance);
+        
+        setShowRightButton(scrollLeft < scrollWidth - clientWidth - tolerance);
+      };
+    
       if (slider) {
-        slider.removeEventListener("scroll", checkScroll);
+        slider.addEventListener("scroll", checkScroll);
+
+        const resizeObserver = new ResizeObserver(checkScroll);
+        resizeObserver.observe(slider);
+        checkScroll();
+        
+        return () => {
+          slider.removeEventListener("scroll", checkScroll);
+          resizeObserver.disconnect();
+        };
+      }
+    }, [movies]);
+
+    const scrollSlider = (direction) => {
+      if (sliderRef.current) {
+        const slider = sliderRef.current;
+        const scrollAmount = direction === "left" ? -slider.clientWidth : slider.clientWidth;
+        
+        slider.scrollBy({
+          left: scrollAmount,
+          behavior: "smooth",
+        });
       }
     };
-  }, []);
-
-  const scrollSlider = (direction) => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -300 : 300,
-        behavior: "smooth",
-      });
-    }
-  };
 
   if (loading) return <div>Đang tải...</div>;
   if (error) return <div>{error}</div>;
@@ -87,7 +96,7 @@ const SlideMovieShowing = () => {
                 </div>
                 <h2 className="name">{movie.title || "Untitled"}</h2>
                 <p className="address">{movie.genre || "Unknown Genre"}</p>
-                <p className="star-rating">★★★★★ {movie.avgRating || "0"} sao</p>
+                <p className="star-rating">{movie.avgRating || "0"} / 5 sao</p>
               </Link>
             ))
           ) : (

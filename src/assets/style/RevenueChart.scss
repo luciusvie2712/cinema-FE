@@ -1,8 +1,182 @@
-.revenue-chart {
-    background: rgb(0, 0, 0);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(223, 220, 220, 0.1);
-    margin-bottom: 20px;
-    
+// RevenueChart.scss
+
+// Variables
+$primary-blue: #3498db;
+$primary-red: #e74c3c;
+$dark-bg: #1a1a2e;
+$chart-bg: #16213e;
+$grid-color: rgba(255, 255, 255, 0.05);
+$text-color: rgba(255, 255, 255, 0.8);
+$highlight-color: #00d4ff;
+$font-stack: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+.revenue-chart-container {
+  position: relative;
+  background: $dark-bg;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: $font-stack;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba($highlight-color, 0.03) 0%, rgba($dark-bg, 0) 50%);
+    pointer-events: none;
   }
+
+  canvas {
+    background: $chart-bg;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  // Custom tooltip styling
+  .chartjs-tooltip {
+    background: rgba($dark-bg, 0.95) !important;
+    border: 1px solid rgba($highlight-color, 0.3) !important;
+    border-radius: 6px !important;
+    padding: 12px 16px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px);
+    opacity: 1 !important;
+    transition: all 0.2s ease !important;
+
+    .chartjs-tooltip-header {
+      color: $highlight-color;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba($highlight-color, 0.2);
+      padding-bottom: 4px;
+    }
+
+    .chartjs-tooltip-body-item {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+
+      span:first-child {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border-radius: 3px;
+      }
+
+      span:last-child {
+        font-size: 0.85rem;
+        color: $text-color;
+      }
+    }
+  }
+}
+
+// Override Chart.js default styles
+.chartjs-render-monitor {
+  animation: fadeIn 0.8s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+// Custom legend
+.chartjs-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem !important;
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    span {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 8px;
+      border-radius: 3px;
+    }
+
+    // Custom legend item colors
+    &:first-child span {
+      background: linear-gradient(135deg, $primary-blue, lighten($primary-blue, 15%));
+      box-shadow: 0 0 10px rgba($primary-blue, 0.3);
+    }
+
+    &:last-child span {
+      background: linear-gradient(135deg, $primary-red, lighten($primary-red, 10%));
+      box-shadow: 0 0 10px rgba($primary-red, 0.3);
+    }
+  }
+}
+
+// Custom axes and grid
+.chartjs-grid {
+  .chartjs-grid-line {
+    stroke: $grid-color;
+    stroke-width: 1px;
+  }
+
+  .chartjs-scale-label {
+    color: $text-color;
+    font-size: 0.8rem;
+  }
+}
+
+// Custom animation for chart line drawing
+.chartjs-animate {
+  animation: chartjs-render-animation 1.5s ease-out;
+
+  @keyframes chartjs-render-animation {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .revenue-chart-container {
+    padding: 1rem;
+
+    .chartjs-legend li {
+      margin: 0 0.5rem;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+  }
+}

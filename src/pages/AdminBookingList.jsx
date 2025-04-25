@@ -5,17 +5,15 @@ import '../assets/style/AdminBookingList.scss'
 
 const AdminBookingList = () => {
   const [bookings, setBookings] = useState([])
-
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const res = await axiosInstance.get('/api/booking')
-        setBookings(res.data)
-      } catch (err) {
-        console.error('Lỗi lấy danh sách vé:', err)
-      }
+  const fetchBookings = async () => {
+    try {
+      const res = await axiosInstance.get('/api/booking')
+      setBookings(res.data)
+    } catch (err) {
+      console.error('Lỗi lấy danh sách vé:', err)
     }
-
+  }
+  useEffect(() => {
     fetchBookings()
   }, [])
 

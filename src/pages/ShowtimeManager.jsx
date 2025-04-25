@@ -55,8 +55,8 @@ function ShowtimeManager() {
           seatCount: parseInt(form.seatCount),
         });
       }
-      fetchShowtimes();
-      setForm({ movieId: '', theater: '', date: '', time: '', format: '', seatCount });
+      await fetchShowtimes();
+      setForm({ movieId: '', theater: '', date: '', time: '', format: '', seatCount: '' });
       setEditingId(null);
     } catch (error) {
       console.error('Lỗi khi thêm/cập nhật suất chiếu:', error);
@@ -80,7 +80,7 @@ function ShowtimeManager() {
   
     try {
       await axiosInstance.delete(`/api/showtime/${id}`);
-      fetchShowtimes();
+      await fetchShowtimes();
     } catch (error) {
       console.error('Lỗi xoá suất chiếu:', error);
     }
