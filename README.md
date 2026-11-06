@@ -1,12 +1,38 @@
-# React + Vite
+# Cinema Frontend — React/Vite Scaffold
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Status:** Incomplete learning scaffold. This repository is **not currently a working cinema booking UI**, and it should not be presented as a shipped or portfolio-ready product.
 
-Currently, two official plugins are available:
+## Current repository state
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19, Vite 6 and JavaScript.
+- `src/App.jsx` currently renders an empty fragment.
+- The project still contains starter assets from React/Vite.
+- No complete UI, integration test suite or public demo has been verified.
 
-## Expanding the ESLint configuration
+## Run locally
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Requires Node.js and npm.
+
+```bash
+git clone https://github.com/luciusvie2712/cinema-FE.git
+cd cinema-FE
+npm ci
+npm run dev
+```
+
+Useful commands:
+
+```bash
+npm run lint
+npm run build
+npm run preview
+```
+
+## Potential next steps
+
+1. Design a real cinema browsing and seat-selection flow.
+2. Define and document the backend API contract.
+3. Add routing, form validation, loading/error states and API integration.
+4. Write unit and end-to-end tests, then add a verified demo and screenshots.
+
+If this project is not being developed further, keep it unpinned or archive it rather than treating it as a finished application.
